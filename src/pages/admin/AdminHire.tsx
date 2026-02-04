@@ -167,7 +167,11 @@ const AdminHire = () => {
                 <div>
                   <label className="block text-sm font-medium mb-2">Upload Image</label>
                   <div className="flex gap-2">
-                    <FileUploader folder="hire" onUpload={(url) => setFormData({ ...formData, image: url })} />
+                    <FileUploader
+                      folder="hire"
+                      onUpload={(url) => setFormData({ ...formData, image: url })}
+                      onFileSelected={(file, preview) => setFormData({ ...formData, image: preview })}
+                    />
                   </div>
                 </div>
                 {formData.image && (

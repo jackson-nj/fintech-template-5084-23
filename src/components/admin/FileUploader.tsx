@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 interface Props {
   folder: string; // e.g. 'equipment', 'gallery'
   onUpload: (url: string) => void;
+  onFileSelected?: (file: File, previewUrl: string) => void;
   bucket?: string;
 }
 
@@ -18,6 +19,8 @@ const FileUploader: React.FC<Props> = ({ folder, onUpload, bucket = "heavy-hire-
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    const previewUrl = URL.createObjectURL(file);
+    if (props.onFileSelected) props.onFileSelected(file, previewUrl);
     setLoading(true);
     try {
       const filePath = `${folder}/${Date.now()}-${file.name.replace(/\s+/g, "_")}`;
@@ -37,7 +40,7 @@ const FileUploader: React.FC<Props> = ({ folder, onUpload, bucket = "heavy-hire-
 
   return (
     <div className="flex items-center gap-2">
-      <input ref={fileRef} type="file" className="hidden" onChange={handleFile} accept="image/*" />
+      <input ref={fileRef} type="file" className="hidden" onChange={handleFile} accept="image/*,video/*" />
       <Button variant="outline" size="icon" onClick={handleClick} disabled={loading}>
         <Upload className="h-4 w-4" />
       </Button>

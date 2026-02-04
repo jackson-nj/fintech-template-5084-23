@@ -132,7 +132,11 @@ const AdminGallery = () => {
                 <div>
                   <label className="block text-sm font-medium mb-2">Upload Image</label>
                   <div className="flex gap-2">
-                    <FileUploader folder="gallery" onUpload={(url) => setFormData({ ...formData, src: url })} />
+                    <FileUploader
+                      folder="gallery"
+                      onUpload={(url) => setFormData({ ...formData, src: url })}
+                      onFileSelected={(file, preview) => setFormData({ ...formData, src: preview })}
+                    />
                   </div>
                 </div>
                 {formData.src && (
