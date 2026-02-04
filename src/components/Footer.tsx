@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Twitter, ArrowRight, Clock } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Twitter, ArrowRight, Clock, KeyRound } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -162,10 +162,17 @@ const Footer = () => {
 
       {/* Bottom Bar */}
       <div className="border-t border-charcoal">
-        <div className="container mx-auto px-6 py-8 flex justify-center items-center">
-          <p className="text-white/50 text-sm text-center">
+        <div className="container mx-auto px-6 py-8 flex justify-between items-center">
+          <p className="text-white/50 text-sm">
             © {currentYear} Changati Construction LTD. All rights reserved.
           </p>
+          <Link
+            to="/admin"
+            className="text-white/30 hover:text-primary transition-colors p-2"
+            aria-label="Admin Login"
+          >
+            <KeyRound className="h-4 w-4" />
+          </Link>
         </div>
       </div>
     </footer>
