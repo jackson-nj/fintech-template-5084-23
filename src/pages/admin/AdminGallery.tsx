@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Plus, Trash2, X, Upload, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import FileUploader from "@/components/admin/FileUploader";
 import AdminLayout from "@/components/admin/AdminLayout";
 
 interface GalleryItem {
@@ -138,9 +139,7 @@ const AdminGallery = () => {
                       className="flex-1 border border-border rounded-md px-3 py-2 bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                       placeholder="Enter image URL"
                     />
-                    <Button variant="outline" size="icon">
-                      <Upload className="h-4 w-4" />
-                    </Button>
+                    <FileUploader folder="gallery" onUpload={(url) => setFormData({ ...formData, src: url })} />
                   </div>
                 </div>
                 {formData.src && (
