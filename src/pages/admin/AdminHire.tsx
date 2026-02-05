@@ -1,91 +1,72 @@
-import { useState } from "react";
-import backhoeloaderImg from "../../assets/hire/backhoeloader.png";
-import bulldozerImg from "../../assets/hire/bulldozer.png";
-import craneImg from "../../assets/hire/CRANE TRUCKS.png";
-import excavatorImg from "../../assets/hire/excavator.png";
-import forkliftsImg from "../../assets/hire/forlifts.png";
-import frontloaderImg from "../../assets/hire/frontloader.jpg";
-import graderImg from "../../assets/hire/grader.png";
-import lowbedImg from "../../assets/hire/lowbedtrailer.png";
-import rockbreakerImg from "../../assets/hire/rock breaker.png";
-import rollerImg from "../../assets/hire/rollercompactor.png";
-import tippersImg from "../../assets/hire/tippers.png";
-import waterbowserImg from "../../assets/hire/waterbowser.png";
-import { Plus, Pencil, Trash2, X, Upload, Save } from "lucide-react";
+ import { useState } from "react";
+ import { Plus, Pencil, Trash2, X, Save, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FileUploader from "@/components/admin/FileUploader";
 import AdminLayout from "@/components/admin/AdminLayout";
+ import { useSupabaseData } from "@/hooks/useSupabaseData";
 
 interface HireItem {
   id: string;
   name: string;
-  description: string;
-  image: string;
+   description?: string;
+   image_url?: string;
+   display_order?: number;
+   created_at?: string;
+   updated_at?: string;
 }
 
-const initialHire: HireItem[] = [
-  { id: "1", name: "Backhoe Loader", description: "Versatile machine for digging, loading, and material handling.", image: backhoeloaderImg },
-  { id: "2", name: "Bulldozer", description: "Powerful earthmoving equipment for grading and clearing land.", image: bulldozerImg },
-  { id: "3", name: "Crane Trucks", description: "Mobile cranes for lifting and transporting heavy loads.", image: craneImg },
-  { id: "4", name: "Excavator", description: "Heavy-duty digging machine for excavation and demolition.", image: excavatorImg },
-  { id: "5", name: "Forklifts", description: "Industrial trucks for lifting and moving materials.", image: forkliftsImg },
-  { id: "6", name: "Front Loader", description: "Wheel loader for scooping and transporting bulk materials.", image: frontloaderImg },
-  { id: "7", name: "Grader", description: "Precision machine for leveling and grading surfaces.", image: graderImg },
-  { id: "8", name: "Lowbed Trailer", description: "Heavy-haul trailer for transporting oversized equipment.", image: lowbedImg },
-  { id: "9", name: "Rock Breaker", description: "Hydraulic attachment for breaking rocks and concrete.", image: rockbreakerImg },
-  { id: "10", name: "Roller Compactor", description: "Compaction equipment for soil, gravel, and asphalt.", image: rollerImg },
-  { id: "11", name: "Tippers", description: "Dump trucks for hauling and unloading bulk materials.", image: tippersImg },
-  { id: "12", name: "Water Bowser", description: "Water tanker for dust suppression and site watering.", image: waterbowserImg },
-];
-
 const AdminHire = () => {
-  const [items, setItems] = useState<HireItem[]>(initialHire);
+   const { data: items, loading, create, update, remove } = useSupabaseData<HireItem>("hire");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<HireItem | null>(null);
-  const [formData, setFormData] = useState({ name: "", description: "", image: "" });
+   const [formData, setFormData] = useState({ name: "", description: "", image_url: "" });
+   const [saving, setSaving] = useState(false);
 
   const openAddModal = () => {
     setEditingItem(null);
-    setFormData({ name: "", description: "", image: "" });
+     setFormData({ name: "", description: "", image_url: "" });
     setIsModalOpen(true);
   };
 
   const openEditModal = (item: HireItem) => {
     setEditingItem(item);
-    setFormData({ name: item.name, description: item.description, image: item.image });
+     setFormData({ name: item.name, description: item.description || "", image_url: item.image_url || "" });
     setIsModalOpen(true);
   };
 
-  const handleSave = () => {
+   const handleSave = async () => {
     if (!formData.name) return;
-
-    if (editingItem) {
-      setItems(
-        items.map((item) =>
-          item.id === editingItem.id
-            ? { ...item, ...formData }
-            : item
-        )
-      );
-    } else {
-      setItems([
-        ...items,
-        {
-          id: Date.now().toString(),
-          ...formData,
-          image: formData.image || "/placeholder.svg",
-        },
-      ]);
+     setSaving(true);
+     try {
+       if (editingItem) {
+         await update(editingItem.id, { name: formData.name, description: formData.description, image_url: formData.image_url });
+       } else {
+         await create({ name: formData.name, description: formData.description, image_url: formData.image_url });
+       }
+       setIsModalOpen(false);
+     } catch (err) {
+       // Error handled by hook
+     } finally {
+       setSaving(false);
     }
-    setIsModalOpen(false);
   };
 
-  const handleDelete = (id: string) => {
+   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this item?")) {
-      setItems(items.filter((item) => item.id !== id));
+       await remove(id);
     }
   };
 
+   if (loading) {
+     return (
+       <AdminLayout>
+         <div className="flex items-center justify-center h-64">
+           <Loader2 className="h-8 w-8 animate-spin text-primary" />
+         </div>
+       </AdminLayout>
+     );
+   }
+ 
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -112,7 +93,7 @@ const AdminHire = () => {
             >
               <div className="aspect-[4/3] bg-muted relative">
                 <img
-                  src={item.image}
+                   src={item.image_url || "/placeholder.svg"}
                   alt={item.name}
                   className="w-full h-full object-contain p-4"
                 />
@@ -127,15 +108,22 @@ const AdminHire = () => {
               </div>
               <div className="p-4">
                 <h3 className="font-display font-bold text-foreground">{item.name}</h3>
-                <p className="text-muted-foreground text-sm mt-1 line-clamp-2">{item.description}</p>
+                 {item.description && (
+                   <p className="text-muted-foreground text-sm mt-1 line-clamp-2">{item.description}</p>
+                 )}
               </div>
             </div>
           ))}
+           {items.length === 0 && (
+             <div className="col-span-full text-center py-12 text-muted-foreground">
+               No equipment found. Click "Add Equipment" to create one.
+             </div>
+           )}
         </div>
 
         {isModalOpen && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div className="bg-card border border-border rounded-lg w-full max-w-md">
+             <div className="bg-card border border-border rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between p-4 border-b border-border">
                 <h2 className="font-display text-xl font-bold">
                   {editingItem ? "Edit Equipment" : "Add Equipment"}
@@ -166,25 +154,23 @@ const AdminHire = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">Upload Image</label>
-                  <div className="flex gap-2">
-                    <FileUploader
-                      folder="hire"
-                      onUpload={(url) => setFormData({ ...formData, image: url })}
-                      onFileSelected={(file, preview) => setFormData({ ...formData, image: preview })}
-                    />
-                  </div>
+                   <FileUploader
+                     folder="hire"
+                     onUpload={(url) => setFormData({ ...formData, image_url: url })}
+                     onFileSelected={(_, preview) => setFormData({ ...formData, image_url: preview })}
+                   />
                 </div>
-                {formData.image && (
+                 {formData.image_url && (
                   <div className="aspect-video bg-muted rounded-md overflow-hidden">
-                    <img src={formData.image} alt="Preview" className="w-full h-full object-contain" />
+                     <img src={formData.image_url} alt="Preview" className="w-full h-full object-contain" />
                   </div>
                 )}
               </div>
               <div className="flex justify-end gap-2 p-4 border-t border-border">
                 <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-                <Button onClick={handleSave} className="gap-2">
-                  <Save className="h-4 w-4" />
-                  Save
+                 <Button onClick={handleSave} className="gap-2" disabled={saving}>
+                   {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                   {saving ? "Saving..." : "Save"}
                 </Button>
               </div>
             </div>

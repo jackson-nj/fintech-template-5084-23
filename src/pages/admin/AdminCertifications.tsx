@@ -1,75 +1,70 @@
-import { useState } from "react";
-import cert1 from "../../assets/certifications/National Pension Scheme Authority.png";
-import cert2 from "../../assets/certifications/pacra.png";
-import cert3 from "../../assets/certifications/Workers' Compensation Fund Control Board.png";
-import cert4 from "../../assets/certifications/zambia revenue authority.png";
-import cert5 from "../../assets/certifications/Zambian Public Procurement Authority.png";
-import { Plus, Pencil, Trash2, X, Upload, Save } from "lucide-react";
+ import { useState } from "react";
+ import { Plus, Pencil, Trash2, X, Save, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import FileUploader from "@/components/admin/FileUploader";
 import AdminLayout from "@/components/admin/AdminLayout";
+ import { useSupabaseData } from "@/hooks/useSupabaseData";
 
 interface CertificationItem {
   id: string;
   name: string;
-  description: string;
-  image: string;
+   image_url: string;
+   display_order?: number;
+   created_at?: string;
 }
 
-const initialCertifications: CertificationItem[] = [
-  { id: "1", name: "National Pension Scheme Authority (NAPSA)", description: "Registered and compliant with NAPSA, ensuring all our employees are covered under the national pension scheme.", image: cert1 },
-  { id: "2", name: "Patents and Companies Registration Agency (PACRA)", description: "Officially registered company with PACRA, operating as a legitimate business entity in Zambia.", image: cert2 },
-  { id: "3", name: "Workers' Compensation Fund Control Board (WCFCB)", description: "Certified with WCFCB, providing workers' compensation coverage for all our employees.", image: cert3 },
-  { id: "4", name: "Zambia Revenue Authority (ZRA)", description: "Tax compliant and registered with ZRA, meeting all our fiscal obligations to the government.", image: cert4 },
-  { id: "5", name: "Zambia Public Procurement Authority (ZPPA)", description: "Registered supplier with ZPPA, qualified to participate in public procurement and government contracts.", image: cert5 },
-];
-
 const AdminCertifications = () => {
-  const [items, setItems] = useState<CertificationItem[]>(initialCertifications);
+   const { data: items, loading, create, update, remove } = useSupabaseData<CertificationItem>("certifications");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<CertificationItem | null>(null);
-  const [formData, setFormData] = useState({ name: "", description: "", image: "" });
+   const [formData, setFormData] = useState({ name: "", image_url: "" });
+   const [saving, setSaving] = useState(false);
 
   const openAddModal = () => {
     setEditingItem(null);
-    setFormData({ name: "", description: "", image: "" });
+     setFormData({ name: "", image_url: "" });
     setIsModalOpen(true);
   };
 
   const openEditModal = (item: CertificationItem) => {
     setEditingItem(item);
-    setFormData({ name: item.name, description: item.description, image: item.image });
+     setFormData({ name: item.name, image_url: item.image_url || "" });
     setIsModalOpen(true);
   };
 
-  const handleSave = () => {
+   const handleSave = async () => {
     if (!formData.name) return;
-
-    if (editingItem) {
-      setItems(
-        items.map((item) =>
-          item.id === editingItem.id ? { ...item, ...formData } : item
-        )
-      );
-    } else {
-      setItems([
-        ...items,
-        {
-          id: Date.now().toString(),
-          ...formData,
-          image: formData.image || "/placeholder.svg",
-        },
-      ]);
+     setSaving(true);
+     try {
+       if (editingItem) {
+         await update(editingItem.id, { name: formData.name, image_url: formData.image_url });
+       } else {
+         await create({ name: formData.name, image_url: formData.image_url || "/placeholder.svg" });
+       }
+       setIsModalOpen(false);
+     } catch (err) {
+       // Error handled by hook
+     } finally {
+       setSaving(false);
     }
-    setIsModalOpen(false);
   };
 
-  const handleDelete = (id: string) => {
+   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this certification?")) {
-      setItems(items.filter((item) => item.id !== id));
+       await remove(id);
     }
   };
 
+   if (loading) {
+     return (
+       <AdminLayout>
+         <div className="flex items-center justify-center h-64">
+           <Loader2 className="h-8 w-8 animate-spin text-primary" />
+         </div>
+       </AdminLayout>
+     );
+   }
+ 
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -96,7 +91,7 @@ const AdminCertifications = () => {
             >
               <div className="h-32 bg-muted relative flex items-center justify-center p-4">
                 <img
-                  src={item.image}
+                   src={item.image_url || "/placeholder.svg"}
                   alt={item.name}
                   className="max-h-full max-w-full object-contain"
                 />
@@ -110,16 +105,20 @@ const AdminCertifications = () => {
                 </div>
               </div>
               <div className="p-4">
-                <h3 className="font-display font-bold text-foreground text-sm">{item.name}</h3>
-                <p className="text-muted-foreground text-xs mt-1 line-clamp-2">{item.description}</p>
+                 <h3 className="font-display font-bold text-foreground text-sm line-clamp-2">{item.name}</h3>
               </div>
             </div>
           ))}
+           {items.length === 0 && (
+             <div className="col-span-full text-center py-12 text-muted-foreground">
+               No certifications found. Click "Add Certification" to create one.
+             </div>
+           )}
         </div>
 
         {isModalOpen && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-            <div className="bg-card border border-border rounded-lg w-full max-w-md">
+             <div className="bg-card border border-border rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between p-4 border-b border-border">
                 <h2 className="font-display text-xl font-bold">
                   {editingItem ? "Edit Certification" : "Add Certification"}
@@ -140,35 +139,24 @@ const AdminCertifications = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">Description</label>
-                  <textarea
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full border border-border rounded-md px-3 py-2 bg-background focus:outline-none focus:ring-2 focus:ring-primary min-h-[80px]"
-                    placeholder="Enter description"
+                   <label className="block text-sm font-medium mb-2">Upload Image</label>
+                   <FileUploader
+                     folder="certifications"
+                     onUpload={(url) => setFormData({ ...formData, image_url: url })}
+                     onFileSelected={(_, preview) => setFormData({ ...formData, image_url: preview })}
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">Upload Image</label>
-                  <div className="flex gap-2">
-                    <FileUploader
-                      folder="certifications"
-                      onUpload={(url) => setFormData({ ...formData, image: url })}
-                      onFileSelected={(file, preview) => setFormData({ ...formData, image: preview })}
-                    />
-                  </div>
-                </div>
-                {formData.image && (
+                 {formData.image_url && (
                   <div className="h-24 bg-muted rounded-md overflow-hidden flex items-center justify-center">
-                    <img src={formData.image} alt="Preview" className="max-h-full max-w-full object-contain" />
+                     <img src={formData.image_url} alt="Preview" className="max-h-full max-w-full object-contain" />
                   </div>
                 )}
               </div>
               <div className="flex justify-end gap-2 p-4 border-t border-border">
                 <Button variant="outline" onClick={() => setIsModalOpen(false)}>Cancel</Button>
-                <Button onClick={handleSave} className="gap-2">
-                  <Save className="h-4 w-4" />
-                  Save
+                 <Button onClick={handleSave} className="gap-2" disabled={saving}>
+                   {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                   {saving ? "Saving..." : "Save"}
                 </Button>
               </div>
             </div>

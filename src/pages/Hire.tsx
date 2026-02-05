@@ -1,86 +1,70 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Phone } from "lucide-react";
-
-// Import equipment images
-import backhoeloader from "@/assets/hire/backhoeloader.png";
-import bulldozer from "@/assets/hire/bulldozer.png";
-import craneTrucks from "@/assets/hire/CRANE TRUCKS.png";
-import excavator from "@/assets/hire/excavator.png";
-import forklifts from "@/assets/hire/forlifts.png";
-import frontloader from "@/assets/hire/frontloader.jpg";
-import grader from "@/assets/hire/grader.png";
-import lowbedtrailer from "@/assets/hire/lowbedtrailer.png";
-import rockbreaker from "@/assets/hire/rock breaker.png";
-import rollercompactor from "@/assets/hire/rollercompactor.png";
-import tippers from "@/assets/hire/tippers.png";
-import waterbowser from "@/assets/hire/waterbowser.png";
-
-const equipment = [
-  {
-    name: "Backhoe Loader",
-    image: backhoeloader,
-    description: "Versatile machine for digging, loading, and material handling.",
-  },
-  {
-    name: "Bulldozer",
-    image: bulldozer,
-    description: "Powerful earthmoving equipment for grading and clearing land.",
-  },
-  {
-    name: "Crane Trucks",
-    image: craneTrucks,
-    description: "Mobile cranes for lifting and transporting heavy loads.",
-  },
-  {
-    name: "Excavator",
-    image: excavator,
-    description: "Heavy-duty digging machine for excavation and demolition.",
-  },
-  {
-    name: "Forklifts",
-    image: forklifts,
-    description: "Industrial trucks for lifting and moving materials.",
-  },
-  {
-    name: "Front Loader",
-    image: frontloader,
-    description: "Wheel loader for scooping and transporting bulk materials.",
-  },
-  {
-    name: "Grader",
-    image: grader,
-    description: "Precision machine for leveling and grading surfaces.",
-  },
-  {
-    name: "Lowbed Trailer",
-    image: lowbedtrailer,
-    description: "Heavy-haul trailer for transporting oversized equipment.",
-  },
-  {
-    name: "Rock Breaker",
-    image: rockbreaker,
-    description: "Hydraulic attachment for breaking rocks and concrete.",
-  },
-  {
-    name: "Roller Compactor",
-    image: rollercompactor,
-    description: "Compaction equipment for soil, gravel, and asphalt.",
-  },
-  {
-    name: "Tippers",
-    image: tippers,
-    description: "Dump trucks for hauling and unloading bulk materials.",
-  },
-  {
-    name: "Water Bowser",
-    image: waterbowser,
-    description: "Water tanker for dust suppression and site watering.",
-  },
-];
+ import { useState, useEffect } from "react";
+ import Header from "@/components/Header";
+ import Footer from "@/components/Footer";
+ import { Phone, Loader2 } from "lucide-react";
+ import { supabase } from "@/integrations/supabase/client";
+ 
+ // Fallback images
+ import backhoeloader from "@/assets/hire/backhoeloader.png";
+ import bulldozer from "@/assets/hire/bulldozer.png";
+ import craneTrucks from "@/assets/hire/CRANE TRUCKS.png";
+ import excavator from "@/assets/hire/excavator.png";
+ import forklifts from "@/assets/hire/forlifts.png";
+ import frontloader from "@/assets/hire/frontloader.jpg";
+ import grader from "@/assets/hire/grader.png";
+ import lowbedtrailer from "@/assets/hire/lowbedtrailer.png";
+ import rockbreaker from "@/assets/hire/rock breaker.png";
+ import rollercompactor from "@/assets/hire/rollercompactor.png";
+ import tippers from "@/assets/hire/tippers.png";
+ import waterbowser from "@/assets/hire/waterbowser.png";
+ 
+ interface HireItem {
+   id: string;
+   name: string;
+   description?: string;
+   image_url?: string;
+ }
+ 
+ const fallbackEquipment = [
+   { id: "1", name: "Backhoe Loader", image_url: backhoeloader, description: "Versatile machine for digging, loading, and material handling." },
+   { id: "2", name: "Bulldozer", image_url: bulldozer, description: "Powerful earthmoving equipment for grading and clearing land." },
+   { id: "3", name: "Crane Trucks", image_url: craneTrucks, description: "Mobile cranes for lifting and transporting heavy loads." },
+   { id: "4", name: "Excavator", image_url: excavator, description: "Heavy-duty digging machine for excavation and demolition." },
+   { id: "5", name: "Forklifts", image_url: forklifts, description: "Industrial trucks for lifting and moving materials." },
+   { id: "6", name: "Front Loader", image_url: frontloader, description: "Wheel loader for scooping and transporting bulk materials." },
+   { id: "7", name: "Grader", image_url: grader, description: "Precision machine for leveling and grading surfaces." },
+   { id: "8", name: "Lowbed Trailer", image_url: lowbedtrailer, description: "Heavy-haul trailer for transporting oversized equipment." },
+   { id: "9", name: "Rock Breaker", image_url: rockbreaker, description: "Hydraulic attachment for breaking rocks and concrete." },
+   { id: "10", name: "Roller Compactor", image_url: rollercompactor, description: "Compaction equipment for soil, gravel, and asphalt." },
+   { id: "11", name: "Tippers", image_url: tippers, description: "Dump trucks for hauling and unloading bulk materials." },
+   { id: "12", name: "Water Bowser", image_url: waterbowser, description: "Water tanker for dust suppression and site watering." },
+ ];
 
 const Hire = () => {
+   const [equipment, setEquipment] = useState<HireItem[]>([]);
+   const [loading, setLoading] = useState(true);
+ 
+   useEffect(() => {
+     const fetchEquipment = async () => {
+       try {
+         const { data, error } = await supabase
+           .from("hire")
+           .select("*")
+           .order("created_at", { ascending: false });
+ 
+         if (error) throw error;
+         setEquipment(data && data.length > 0 ? data : fallbackEquipment);
+       } catch (err) {
+         console.error("Error fetching hire data:", err);
+         setEquipment(fallbackEquipment);
+       } finally {
+         setLoading(false);
+       }
+     };
+ 
+     fetchEquipment();
+   }, []);
+ 
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -111,17 +95,21 @@ const Hire = () => {
             </p>
           </div>
 
-          {/* Equipment Cards Grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {equipment.map((item, index) => (
+           {loading ? (
+             <div className="flex items-center justify-center py-20">
+               <Loader2 className="h-8 w-8 animate-spin text-primary" />
+             </div>
+           ) : (
+             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+               {equipment.map((item) => (
               <div
-                key={index}
+                   key={item.id}
                 className="group bg-white overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
               >
                 {/* Image Container */}
                 <div className="relative h-56 overflow-hidden bg-zinc-100 flex items-center justify-center">
                   <img
-                    src={item.image}
+                       src={item.image_url || "/placeholder.svg"}
                     alt={item.name}
                     className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
                   />
@@ -134,7 +122,7 @@ const Hire = () => {
                     {item.name}
                   </h3>
                   <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                    {item.description}
+                       {item.description || ""}
                   </p>
                   <a 
                     href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps."
@@ -149,6 +137,7 @@ const Hire = () => {
               </div>
             ))}
           </div>
+           )}
         </div>
       </section>
 

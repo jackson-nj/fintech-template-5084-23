@@ -1,41 +1,29 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { Award, CheckCircle } from "lucide-react";
-
-// Import certification images
-import napsa from "@/assets/certifications/National Pension Scheme Authority.png";
-import pacra from "@/assets/certifications/pacra.png";
-import wcfcb from "@/assets/certifications/Workers' Compensation Fund Control Board.png";
-import zra from "@/assets/certifications/zambia revenue authority.png";
-import zppa from "@/assets/certifications/Zambian Public Procurement Authority.png";
-
-const certifications = [
-  {
-    name: "National Pension Scheme Authority (NAPSA)",
-    image: napsa,
-    description: "Registered and compliant with NAPSA, ensuring all our employees are covered under the national pension scheme."
-  },
-  {
-    name: "Patents and Companies Registration Agency (PACRA)",
-    image: pacra,
-    description: "Officially registered company with PACRA, operating as a legitimate business entity in Zambia."
-  },
-  {
-    name: "Workers' Compensation Fund Control Board (WCFCB)",
-    image: wcfcb,
-    description: "Certified with WCFCB, providing workers' compensation coverage for all our employees."
-  },
-  {
-    name: "Zambia Revenue Authority (ZRA)",
-    image: zra,
-    description: "Tax compliant and registered with ZRA, meeting all our fiscal obligations to the government."
-  },
-  {
-    name: "Zambia Public Procurement Authority (ZPPA)",
-    image: zppa,
-    description: "Registered supplier with ZPPA, qualified to participate in public procurement and government contracts."
-  }
-];
+ import { useState, useEffect } from "react";
+ import Header from "@/components/Header";
+ import Footer from "@/components/Footer";
+ import { Award, CheckCircle, Loader2 } from "lucide-react";
+ import { supabase } from "@/integrations/supabase/client";
+ 
+ // Fallback certification images
+ import napsa from "@/assets/certifications/National Pension Scheme Authority.png";
+ import pacra from "@/assets/certifications/pacra.png";
+ import wcfcb from "@/assets/certifications/Workers' Compensation Fund Control Board.png";
+ import zra from "@/assets/certifications/zambia revenue authority.png";
+ import zppa from "@/assets/certifications/Zambian Public Procurement Authority.png";
+ 
+ interface Certification {
+   id: string;
+   name: string;
+   image_url: string;
+ }
+ 
+ const fallbackCertifications: Certification[] = [
+   { id: "1", name: "National Pension Scheme Authority (NAPSA)", image_url: napsa },
+   { id: "2", name: "Patents and Companies Registration Agency (PACRA)", image_url: pacra },
+   { id: "3", name: "Workers' Compensation Fund Control Board (WCFCB)", image_url: wcfcb },
+   { id: "4", name: "Zambia Revenue Authority (ZRA)", image_url: zra },
+   { id: "5", name: "Zambia Public Procurement Authority (ZPPA)", image_url: zppa },
+ ];
 
 const compliancePoints = [
   "Fully licensed and registered business",
@@ -47,6 +35,30 @@ const compliancePoints = [
 ];
 
 const Certifications = () => {
+   const [certifications, setCertifications] = useState<Certification[]>([]);
+   const [loading, setLoading] = useState(true);
+ 
+   useEffect(() => {
+     const fetchCertifications = async () => {
+       try {
+         const { data, error } = await supabase
+           .from("certifications")
+           .select("*")
+           .order("created_at", { ascending: false });
+ 
+         if (error) throw error;
+         setCertifications(data && data.length > 0 ? data : fallbackCertifications);
+       } catch (err) {
+         console.error("Error fetching certifications:", err);
+         setCertifications(fallbackCertifications);
+       } finally {
+         setLoading(false);
+       }
+     };
+ 
+     fetchCertifications();
+   }, []);
+ 
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -83,15 +95,20 @@ const Certifications = () => {
       {/* Certifications Grid */}
       <section className="py-20 bg-zinc-50">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {certifications.map((cert, index) => (
+           {loading ? (
+             <div className="flex items-center justify-center py-20">
+               <Loader2 className="h-8 w-8 animate-spin text-primary" />
+             </div>
+           ) : (
+             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+               {certifications.map((cert) => (
               <div
-                key={index}
+                   key={cert.id}
                 className="bg-white p-8 shadow-sm hover:shadow-lg transition-all duration-300 group"
               >
                 <div className="h-32 flex items-center justify-center mb-6 bg-gray-50 p-4">
                   <img
-                    src={cert.image}
+                       src={cert.image_url || "/placeholder.svg"}
                     alt={cert.name}
                     className="max-h-full max-w-full object-contain"
                   />
@@ -99,12 +116,10 @@ const Certifications = () => {
                 <h3 className="font-display text-lg font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
                   {cert.name}
                 </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  {cert.description}
-                </p>
               </div>
             ))}
           </div>
+           )}
         </div>
       </section>
 
