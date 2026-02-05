@@ -13,12 +13,36 @@
    image_url?: string;
  }
  
- const fallbackServices: ServiceItem[] = [
-   { id: "1", title: "Equipments for Hire", description: "Excavators, bulldozers, graders, loaders, rollers, dump trucks, cranes.", image_url: equipmentHireImg },
-   { id: "2", title: "Wet Hire (Equipment + Operator)", description: "Certified, experienced operators supplied with machinery.", image_url: wetHireImg },
-   { id: "3", title: "Equipment Delivery", description: "Reliable delivery and pickup services to your project site.", image_url: deliveryImg },
-   { id: "4", title: "Dry Hire (Equipment Only)", description: "Well-maintained machines for experienced contractors.", image_url: dryHireImg },
- ];
+const fallbackServices: ServiceItem[] = [
+  {
+    id: "1",
+    title: "Equipment Hire",
+    description:
+      "Access to a full range of heavy machinery for construction, earthworks, and site preparation. Available for short-term or project-based hire.",
+    image_url: equipmentHireImg,
+  },
+  {
+    id: "2",
+    title: "Delivery",
+    description:
+      "Transport of machinery to and from your site using low-bed trailers. Timely, safe delivery so equipment arrives ready for work.",
+    image_url: deliveryImg,
+  },
+  {
+    id: "3",
+    title: "Dry Hire",
+    description:
+      "Equipment supplied without an operator for clients who have their own certified team. Flexible hire periods and well-maintained machines.",
+    image_url: dryHireImg,
+  },
+  {
+    id: "4",
+    title: "Wet Hire",
+    description:
+      "Equipment provided with experienced, certified operators. Ideal for projects that require skilled handling and efficient execution.",
+    image_url: wetHireImg,
+  },
+];
 
 const ServicesSection = () => {
    const [services, setServices] = useState<ServiceItem[]>([]);
