@@ -1,43 +1,50 @@
-import { Link } from "react-router-dom";
-
-// Resolve asset URLs at runtime to avoid early-evaluation ReferenceErrors
-// (this prevents cases where a variable is referenced before module initialization)
-
-const EquipmentSection = () => {
-  const equipmentCategories = [
-    {
-      title: "Backhoe Loader",
-      image: new URL("../assets/equipment/backhoeloader.jpg", import.meta.url).href,
-    },
-    {
-      title: "Roller Compactor",
-      image: new URL("../assets/equipment/rollercompactor.png", import.meta.url).href,
-    },
-    {
-      title: "Low Bed Trailer",
-      image: new URL("../assets/equipment/lowbedtrailer.jpg", import.meta.url).href,
-    },
-    {
-      title: "Front Loader",
-      image: new URL("../assets/equipment/frontloader.jpg", import.meta.url).href,
-    },
-    {
-      title: "Excavator",
-      image: new URL("../assets/equipment/excavator.png", import.meta.url).href,
-    },
-    {
-      title: "Grader",
-      image: new URL("../assets/equipment/grader.png", import.meta.url).href,
-    },
-    {
-      title: "Bulldozer",
-      image: new URL("../assets/equipment/bulldozer.png", import.meta.url).href,
-    },
-    {
-      title: "Rock Breaker",
-      image: new URL("../assets/equipment/rockbreaker.jpg", import.meta.url).href,
-    },
-  ];
+ import { useState, useEffect } from "react";
+ import { Link } from "react-router-dom";
+ import { Loader2 } from "lucide-react";
+ import { supabase } from "@/integrations/supabase/client";
+ 
+ interface EquipmentItem {
+   id: string;
+   name: string;
+   image_url?: string;
+ }
+ 
+ const fallbackEquipment = [
+   { id: "1", name: "Backhoe Loader", image_url: new URL("../assets/equipment/backhoeloader.jpg", import.meta.url).href },
+   { id: "2", name: "Roller Compactor", image_url: new URL("../assets/equipment/rollercompactor.png", import.meta.url).href },
+   { id: "3", name: "Low Bed Trailer", image_url: new URL("../assets/equipment/lowbedtrailer.jpg", import.meta.url).href },
+   { id: "4", name: "Front Loader", image_url: new URL("../assets/equipment/frontloader.jpg", import.meta.url).href },
+   { id: "5", name: "Excavator", image_url: new URL("../assets/equipment/excavator.png", import.meta.url).href },
+   { id: "6", name: "Grader", image_url: new URL("../assets/equipment/grader.png", import.meta.url).href },
+   { id: "7", name: "Bulldozer", image_url: new URL("../assets/equipment/bulldozer.png", import.meta.url).href },
+   { id: "8", name: "Rock Breaker", image_url: new URL("../assets/equipment/rockbreaker.jpg", import.meta.url).href },
+ ];
+ 
+ const EquipmentSection = () => {
+   const [equipment, setEquipment] = useState<EquipmentItem[]>([]);
+   const [loading, setLoading] = useState(true);
+ 
+   useEffect(() => {
+     const fetchEquipment = async () => {
+       try {
+         const { data, error } = await supabase
+           .from("equipment")
+           .select("*")
+           .order("created_at", { ascending: false })
+           .limit(8);
+ 
+         if (error) throw error;
+         setEquipment(data && data.length > 0 ? data : fallbackEquipment);
+       } catch (err) {
+         console.error("Error fetching equipment:", err);
+         setEquipment(fallbackEquipment);
+       } finally {
+         setLoading(false);
+       }
+     };
+ 
+     fetchEquipment();
+   }, []);
 
   return (
     <section id="equipment" className="py-24 lg:py-32 bg-white">
@@ -54,11 +61,15 @@ const EquipmentSection = () => {
           </p>
         </div>
 
-        {/* Equipment Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {equipmentCategories.map((equipment) => (
+         {loading ? (
+           <div className="flex items-center justify-center py-20">
+             <Loader2 className="h-8 w-8 animate-spin text-primary" />
+           </div>
+         ) : (
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+             {equipment.map((item) => (
             <a
-              key={equipment.title}
+                 key={item.id}
               href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps."
               target="_blank"
               rel="noopener noreferrer"
@@ -67,8 +78,8 @@ const EquipmentSection = () => {
               {/* Image */}
               <div className="relative aspect-[4/3] overflow-hidden bg-white">
                 <img
-                  src={equipment.image}
-                  alt={equipment.title}
+                     src={item.image_url || "/placeholder.svg"}
+                     alt={item.name}
                   className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
@@ -76,7 +87,7 @@ const EquipmentSection = () => {
               <div className="p-4 text-center bg-gray-50/50 border-t border-gray-100 group-hover:bg-primary transition-colors duration-300 overflow-hidden">
                 <div className="relative h-6">
                   <span className="font-display text-base font-bold text-foreground absolute inset-0 flex items-center justify-center transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-full">
-                    {equipment.title}
+                       {item.name}
                   </span>
                   <span className="font-display text-sm font-bold text-black absolute inset-0 flex items-center justify-center transition-all duration-300 opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0">
                     Hire Now
@@ -86,6 +97,7 @@ const EquipmentSection = () => {
             </a>
           ))}
         </div>
+         )}
 
         {/* View All Button */}
         <div className="text-center mt-12">

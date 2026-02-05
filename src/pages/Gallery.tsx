@@ -1,57 +1,87 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { useState } from "react";
-import { X } from "lucide-react";
-
-// Import gallery images
-import project1 from "@/assets/gallery/project1.jpg";
-import project2 from "@/assets/gallery/project2.jpg";
-import project3 from "@/assets/gallery/project3.jpg";
-import project4 from "@/assets/gallery/project4.jpg";
-import project5 from "@/assets/gallery/project5.jpg";
-import project6 from "@/assets/gallery/project6.jpg";
-import project7 from "@/assets/gallery/project7.jpg";
-import project8 from "@/assets/gallery/project8.jpg";
-import project10 from "@/assets/gallery/project10.jpg";
-import project11 from "@/assets/gallery/project11.jpg";
-import project12 from "@/assets/gallery/project12.jpg";
-import project13 from "@/assets/gallery/project13.jpg";
-import project14 from "@/assets/gallery/project14.jpg";
-import projectA from "@/assets/gallery/projectA.jpg";
-import projectC from "@/assets/gallery/projectC.jpg";
-import projectD from "@/assets/gallery/projectD.jpg";
-import projectE from "@/assets/gallery/projectE.jpg";
-import projectF from "@/assets/gallery/projectF.jpg";
-import projectG from "@/assets/gallery/projectG.jpg";
-import projectH from "@/assets/gallery/projectH.jpg";
-import projectI from "@/assets/gallery/projectI.jpg";
-
-const galleryImages = [
-  { src: project1, alt: "Project 1" },
-  { src: project2, alt: "Project 2" },
-  { src: project3, alt: "Project 3" },
-  { src: project4, alt: "Project 4" },
-  { src: project5, alt: "Project 5" },
-  { src: project6, alt: "Project 6" },
-  { src: project7, alt: "Project 7" },
-  { src: project8, alt: "Project 8" },
-  { src: project10, alt: "Project 10" },
-  { src: project11, alt: "Project 11" },
-  { src: project12, alt: "Project 12" },
-  { src: project13, alt: "Project 13" },
-  { src: project14, alt: "Project 14" },
-  { src: projectA, alt: "Project A" },
-  { src: projectC, alt: "Project C" },
-  { src: projectD, alt: "Project D" },
-  { src: projectE, alt: "Project E" },
-  { src: projectF, alt: "Project F" },
-  { src: projectG, alt: "Project G" },
-  { src: projectH, alt: "Project H" },
-  { src: projectI, alt: "Project I" },
-];
+ import { useState, useEffect } from "react";
+ import Header from "@/components/Header";
+ import Footer from "@/components/Footer";
+ import { X, Loader2 } from "lucide-react";
+ import { supabase } from "@/integrations/supabase/client";
+ 
+ // Fallback gallery images
+ import project1 from "@/assets/gallery/project1.jpg";
+ import project2 from "@/assets/gallery/project2.jpg";
+ import project3 from "@/assets/gallery/project3.jpg";
+ import project4 from "@/assets/gallery/project4.jpg";
+ import project5 from "@/assets/gallery/project5.jpg";
+ import project6 from "@/assets/gallery/project6.jpg";
+ import project7 from "@/assets/gallery/project7.jpg";
+ import project8 from "@/assets/gallery/project8.jpg";
+ import project10 from "@/assets/gallery/project10.jpg";
+ import project11 from "@/assets/gallery/project11.jpg";
+ import project12 from "@/assets/gallery/project12.jpg";
+ import project13 from "@/assets/gallery/project13.jpg";
+ import project14 from "@/assets/gallery/project14.jpg";
+ import projectA from "@/assets/gallery/projectA.jpg";
+ import projectC from "@/assets/gallery/projectC.jpg";
+ import projectD from "@/assets/gallery/projectD.jpg";
+ import projectE from "@/assets/gallery/projectE.jpg";
+ import projectF from "@/assets/gallery/projectF.jpg";
+ import projectG from "@/assets/gallery/projectG.jpg";
+ import projectH from "@/assets/gallery/projectH.jpg";
+ import projectI from "@/assets/gallery/projectI.jpg";
+ 
+ interface GalleryImage {
+   id: string;
+   src: string;
+   alt: string;
+ }
+ 
+ const fallbackGallery: GalleryImage[] = [
+   { id: "1", src: project1, alt: "Project 1" },
+   { id: "2", src: project2, alt: "Project 2" },
+   { id: "3", src: project3, alt: "Project 3" },
+   { id: "4", src: project4, alt: "Project 4" },
+   { id: "5", src: project5, alt: "Project 5" },
+   { id: "6", src: project6, alt: "Project 6" },
+   { id: "7", src: project7, alt: "Project 7" },
+   { id: "8", src: project8, alt: "Project 8" },
+   { id: "9", src: project10, alt: "Project 10" },
+   { id: "10", src: project11, alt: "Project 11" },
+   { id: "11", src: project12, alt: "Project 12" },
+   { id: "12", src: project13, alt: "Project 13" },
+   { id: "13", src: project14, alt: "Project 14" },
+   { id: "14", src: projectA, alt: "Project A" },
+   { id: "15", src: projectC, alt: "Project C" },
+   { id: "16", src: projectD, alt: "Project D" },
+   { id: "17", src: projectE, alt: "Project E" },
+   { id: "18", src: projectF, alt: "Project F" },
+   { id: "19", src: projectG, alt: "Project G" },
+   { id: "20", src: projectH, alt: "Project H" },
+   { id: "21", src: projectI, alt: "Project I" },
+ ];
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+   const [loading, setLoading] = useState(true);
+ 
+   useEffect(() => {
+     const fetchGallery = async () => {
+       try {
+         const { data, error } = await supabase
+           .from("gallery")
+           .select("*")
+           .order("created_at", { ascending: false });
+ 
+         if (error) throw error;
+         setGalleryImages(data && data.length > 0 ? data : fallbackGallery);
+       } catch (err) {
+         console.error("Error fetching gallery:", err);
+         setGalleryImages(fallbackGallery);
+       } finally {
+         setLoading(false);
+       }
+     };
+ 
+     fetchGallery();
+   }, []);
 
   return (
     <div className="min-h-screen bg-white">
@@ -82,11 +112,15 @@ const Gallery = () => {
             </p>
           </div>
 
-          {/* Grid - 4 per row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {galleryImages.map((image, index) => (
+           {loading ? (
+             <div className="flex items-center justify-center py-20">
+               <Loader2 className="h-8 w-8 animate-spin text-primary" />
+             </div>
+           ) : (
+             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+               {galleryImages.map((image) => (
               <div
-                key={index}
+                   key={image.id}
                 className="group cursor-pointer overflow-hidden"
                 onClick={() => setSelectedImage(image.src)}
               >
@@ -105,6 +139,7 @@ const Gallery = () => {
               </div>
             ))}
           </div>
+           )}
         </div>
       </section>
 
