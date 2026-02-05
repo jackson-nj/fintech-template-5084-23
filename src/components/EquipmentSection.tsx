@@ -7,7 +7,7 @@ const EquipmentSection = () => {
   const equipmentCategories = [
     {
       title: "Backhoe Loader",
-      image: new URL("../assets/equipment/backhoeLoader.jpg", import.meta.url).href,
+      image: new URL("../assets/equipment/backhoeloader.jpg", import.meta.url).href,
     },
     {
       title: "Roller Compactor",

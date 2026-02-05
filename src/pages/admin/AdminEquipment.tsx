@@ -1,5 +1,5 @@
 import { useState } from "react";
-import backhoeImg from "../../assets/equipment/backhoeLoader.jpg";
+import backhoeImg from "../../assets/equipment/backhoeloader.jpg";
 import rollerImg from "../../assets/equipment/rollercompactor.png";
 import lowbedImg from "../../assets/equipment/lowbedtrailer.jpg";
 import frontloaderImg from "../../assets/equipment/frontloader.jpg";
