@@ -39,6 +39,8 @@ interface SelectedItem {
   src: string;
   type: GalleryItemType;
   alt?: string;
+  name?: string;
+  description?: string;
 }
  
  const fallbackGallery: GalleryImage[] = [
@@ -176,7 +178,7 @@ const Gallery = () => {
                   <div
                     key={image.id}
                     className="group cursor-pointer overflow-hidden"
-                    onClick={() => setSelectedImage({ src: image.src, type, alt: image.alt })}
+                    onClick={() => setSelectedImage({ src: image.src, type, alt: image.alt, name: (image as any).name, description: (image as any).description })}
                   >
                     <div className="relative overflow-hidden aspect-square">
                       {type === "image" ? (
@@ -211,33 +213,47 @@ const Gallery = () => {
 
       {/* Lightbox Modal */}
       {selectedImage && (
-        <div 
-          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+        <div
+          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-6"
           onClick={() => setSelectedImage(null)}
         >
           <button
             type="button"
             aria-label="Close gallery preview"
-            className="absolute top-6 right-6 text-white hover:text-primary transition-colors"
+            className="absolute top-6 right-6 text-white hover:text-primary transition-colors z-50"
             onClick={() => setSelectedImage(null)}
           >
             <X className="h-8 w-8" />
           </button>
-          {selectedImage.type === "image" ? (
-            <img
-              src={selectedImage.src}
-              alt={selectedImage.alt || "Gallery preview"}
-              className="max-w-full max-h-[90vh] object-contain"
-              onClick={(e) => e.stopPropagation()}
-            />
-          ) : (
-            <video
-              src={selectedImage.src}
-              controls
-              className="max-w-full max-h-[90vh] bg-black"
-              onClick={(e) => e.stopPropagation()}
-            />
-          )}
+
+          <div className="bg-white rounded-lg overflow-hidden max-w-6xl w-full flex flex-col md:flex-row shadow-xl">
+            <div className="md:w-2/3 w-full bg-black flex items-center justify-center">
+              {selectedImage.type === "image" ? (
+                <img
+                  src={selectedImage.src}
+                  alt={selectedImage.alt || "Project image"}
+                  className="w-full h-full object-cover max-h-[80vh]"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              ) : (
+                <video
+                  src={selectedImage.src}
+                  controls
+                  className="w-full h-full object-cover max-h-[80vh] bg-black"
+                  onClick={(e) => e.stopPropagation()}
+                />
+              )}
+            </div>
+            <div className="md:w-1/3 w-full p-6 bg-white">
+              <h3 className="font-display text-xl font-bold text-foreground mb-2">{selectedImage.name || selectedImage.alt}</h3>
+              {selectedImage.description && (
+                <p className="text-muted-foreground mb-4">{selectedImage.description}</p>
+              )}
+              <div className="mt-4">
+                <button className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90">View Details</button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
