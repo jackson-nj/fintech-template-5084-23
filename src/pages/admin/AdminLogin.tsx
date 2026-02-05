@@ -26,7 +26,7 @@ const AdminLogin = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-16 h-16 mx-auto mb-4">
-            <img src={require("@/assets/services/logo1.png")} alt="Logo" className="w-16 h-16 object-contain mx-auto" />
+            <img src={require("@/assets/services/logomain.png")} alt="Logo" className="w-16 h-16 object-contain mx-auto" />
           </div>
           <h1 className="font-display text-3xl font-bold text-white mb-2">
             Admin Login
