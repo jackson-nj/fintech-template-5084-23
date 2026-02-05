@@ -1,34 +1,53 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Phone, Mail, Facebook, Instagram, Linkedin, Youtube, Menu, X, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Phone, Mail, Facebook, Instagram, Youtube, Menu, X, ChevronDown } from "lucide-react";
+
 
 const TopContactBar = () => (
   <div className="w-full bg-surface-dark text-surface-dark-foreground py-3">
-    <div className="container mx-auto px-6 flex flex-col sm:flex-row justify-between items-center text-sm gap-3">
-      <div className="flex items-center gap-8">
-        <a href="tel:+260971688888" className="flex items-center gap-2 hover:text-primary transition-colors group">
+    <div className="container mx-auto px-6 text-sm">
+      {/* Mobile: phone (left) and socials (right) */}
+      <div className="flex items-center justify-between sm:hidden">
+        <a href="tel:+260971688888" className="flex items-center gap-2 hover:text-primary transition-colors">
           <Phone className="h-4 w-4 text-primary" />
           <span className="font-medium">+260 971 688 888</span>
         </a>
-        <a href="mailto:chaganticonstruction@gmail.com" className="flex items-center gap-2 hover:text-primary transition-colors group">
-          <Mail className="h-4 w-4 text-primary" />
-          <span className="font-medium">chaganticonstruction@gmail.com</span>
-        </a>
+        <div className="flex items-center gap-3">
+          <a href="https://web.facebook.com/profile.php?id=100085097660946" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Facebook">
+            <Facebook className="h-4 w-4" />
+          </a>
+          <a href="#" className="hover:text-primary transition-colors" aria-label="Instagram">
+            <Instagram className="h-4 w-4" />
+          </a>
+        </div>
       </div>
-      <div className="flex items-center gap-5">
-        <a href="https://web.facebook.com/profile.php?id=100085097660946" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Facebook">
-          <Facebook className="h-4 w-4" />
-        </a>
-        <a href="#" className="hover:text-primary transition-colors" aria-label="Instagram">
-          <Instagram className="h-4 w-4" />
-        </a>
-        <a href="#" className="hover:text-primary transition-colors" aria-label="LinkedIn">
-          <Linkedin className="h-4 w-4" />
-        </a>
-        <a href="#" className="hover:text-primary transition-colors" aria-label="YouTube">
-          <Youtube className="h-4 w-4" />
-        </a>
+
+      {/* Desktop/tablet: original full bar */}
+      <div className="hidden sm:flex flex-row justify-between items-center gap-3">
+        <div className="flex items-center gap-8">
+          <a href="tel:+260971688888" className="flex items-center gap-2 hover:text-primary transition-colors group">
+            <Phone className="h-4 w-4 text-primary" />
+            <span className="font-medium">+260 971 688 888</span>
+          </a>
+          <a href="mailto:chaganticonstruction@gmail.com" className="flex items-center gap-2 hover:text-primary transition-colors group">
+            <Mail className="h-4 w-4 text-primary" />
+            <span className="font-medium">chaganticonstruction@gmail.com</span>
+          </a>
+        </div>
+        <div className="flex items-center gap-5">
+          <a href="https://web.facebook.com/profile.php?id=100085097660946" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Facebook">
+            <Facebook className="h-4 w-4" />
+          </a>
+          <a href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps." className="hover:text-primary transition-colors" aria-label="WhatsApp">
+            <Instagram className="h-4 w-4" />
+          </a>
+          <a href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps." className="hover:text-primary transition-colors" aria-label="WhatsApp">
+            <Phone className="h-4 w-4" />
+          </a>
+          <a href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps." className="hover:text-primary transition-colors" aria-label="WhatsApp">
+            <Youtube className="h-4 w-4" />
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -143,7 +162,6 @@ const Header = () => {
             {isMobileMenuOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
           </button>
         </div>
-
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div className="lg:hidden bg-surface-dark/95 backdrop-blur-md border-t border-charcoal">

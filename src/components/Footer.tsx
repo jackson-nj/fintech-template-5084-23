@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Twitter, ArrowRight, Clock, KeyRound } from "lucide-react";
+import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, ArrowRight, Clock, KeyRound } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -49,23 +49,23 @@ const Footer = () => {
                 <Facebook className="h-5 w-5 text-white" />
               </a>
               <a
-                href="#"
+                href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps."
                 className="w-11 h-11 bg-charcoal rounded flex items-center justify-center hover:bg-primary transition-colors"
-                aria-label="Instagram"
+                aria-label="WhatsApp"
               >
                 <Instagram className="h-5 w-5 text-white" />
               </a>
               <a
-                href="#"
+                href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps."
                 className="w-11 h-11 bg-charcoal rounded flex items-center justify-center hover:bg-primary transition-colors"
-                aria-label="LinkedIn"
+                aria-label="WhatsApp"
               >
-                <Linkedin className="h-5 w-5 text-white" />
+                <Phone className="h-5 w-5 text-white" />
               </a>
               <a
-                href="#"
+                href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps."
                 className="w-11 h-11 bg-charcoal rounded flex items-center justify-center hover:bg-primary transition-colors"
-                aria-label="Twitter"
+                aria-label="WhatsApp"
               >
                 <Twitter className="h-5 w-5 text-white" />
               </a>

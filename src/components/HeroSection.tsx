@@ -16,11 +16,7 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 pt-40 pb-24">
         <div className="max-w-4xl animate-fade-up">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-3 bg-primary/20 border border-primary/50 rounded px-5 py-2 mb-8">
-            <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-            <span className="text-primary font-bold text-sm uppercase tracking-wider">Trusted Since 1995</span>
-          </div>
+          {/* Badge removed per request */}
 
           {/* Headline */}
           <h1 className="font-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 leading-[1.1] tracking-tight">
@@ -30,7 +26,7 @@ const HeroSection = () => {
 
           {/* Description */}
           <p className="text-xl md:text-2xl text-white/80 mb-10 max-w-2xl leading-relaxed font-light">
-            From excavators to graders — reliable machinery with experienced operators. 
+            From excavators to graders and dump trucks, we have the reliable machinery with experienced operators. 
             On-time delivery for projects of any scale.
           </p>
 
