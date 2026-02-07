@@ -1,8 +1,8 @@
- import { useState, useEffect } from "react";
- import { Link } from "react-router-dom";
- import { Loader2 } from "lucide-react";
- import { supabase } from "@/integrations/supabase/client";
- 
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+
 interface EquipmentItem {
   id: string;
   name: string;
@@ -15,97 +15,77 @@ const fallbackEquipment = [
   { id: "3", name: "Konkola Plant", image_url: new URL("../assets/services/konkola.avif", import.meta.url).href },
   { id: "4", name: "Mopani Works", image_url: new URL("../assets/services/mopani.jpg", import.meta.url).href },
   { id: "5", name: "Neelkanth Lime", image_url: new URL("../assets/services/Neelkanth-lime-1.png", import.meta.url).href },
-  { id: "6", name: "Mining Ops", image_url: new URL("../assets/services/84f18f05b6fa96f541dbec904c673f05.jpg", import.meta.url).href },
-  { id: "7", name: "About Image A", image_url: new URL("../assets/services/about us1.jpg", import.meta.url).href },
-  { id: "8", name: "About Image B", image_url: new URL("../assets/services/about us2.jpg", import.meta.url).href },
+  { id: "6", name: "About Image A", image_url: new URL("../assets/services/about us1.jpg", import.meta.url).href },
+  { id: "7", name: "About Image B", image_url: new URL("../assets/services/about us2.jpg", import.meta.url).href },
+  { id: "8", name: "About Image C", image_url: new URL("../assets/services/about us3.jpg", import.meta.url).href },
 ];
- 
- const EquipmentSection = () => {
-   const [equipment, setEquipment] = useState<EquipmentItem[]>([]);
-   const [loading, setLoading] = useState(true);
- 
-   useEffect(() => {
-     const fetchEquipment = async () => {
-       try {
-         const { data, error } = await supabase
-           .from("equipment")
-           .select("*")
-           .order("created_at", { ascending: false })
-           .limit(8);
- 
-         if (error) throw error;
-         setEquipment(data && data.length > 0 ? data : fallbackEquipment);
-       } catch (err) {
-         console.error("Error fetching equipment:", err);
-         setEquipment(fallbackEquipment);
-       } finally {
-         setLoading(false);
-       }
-     };
- 
-     fetchEquipment();
-   }, []);
+
+const EquipmentSection = () => {
+  const [equipment, setEquipment] = useState<EquipmentItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEquipment = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("equipment")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(8);
+        if (error) throw error;
+        setEquipment(data && data.length > 0 ? data : fallbackEquipment);
+      } catch {
+        setEquipment(fallbackEquipment);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEquipment();
+  }, []);
 
   return (
-    <section id="services" className="py-24 lg:py-32 bg-white">
+    <section className="py-14 lg:py-20 bg-muted">
       <div className="container mx-auto px-6">
-        {/* Section Header */}
-        <div className="text-center mb-20">
-          <span className="text-primary font-bold uppercase tracking-[0.2em] text-sm">Our Services</span>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-2">
-            SERVICES <span className="text-primary">OFFERED</span>
+        <div className="text-center mb-10">
+          <span className="text-primary font-bold uppercase tracking-[0.2em] text-xs">Our Portfolio</span>
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-3">
+            PROJECT <span className="text-primary">GALLERY</span>
           </h2>
-          <div className="text-sm text-muted-foreground mb-4">Target: Mining Operations</div>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            Browse our core service offerings focused on industrial mining, construction and mechanical projects.
-          </p>
         </div>
 
-         {loading ? (
-           <div className="flex items-center justify-center py-20">
-             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-           </div>
-         ) : (
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {equipment.map((item) => (
-              <a
+        {loading ? (
+          <div className="flex items-center justify-center py-16">
+            <Loader2 className="h-7 w-7 animate-spin text-primary" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {equipment.map((item, index) => (
+              <div
                 key={item.id}
-                href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20your%20services.%20Please%20advise%20on%20availability%20and%20next%20steps."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group bg-white border-2 border-gray-100 hover:border-primary overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg shadow-sm"
+                data-animate="fade-up"
+                data-animate-delay={`${index * 80}ms`}
+                className="group relative aspect-[4/3] overflow-hidden bg-card border border-border hover:shadow-lg transition-all duration-300"
               >
-              {/* Image */}
-              <div className="relative aspect-[4/3] overflow-hidden bg-white">
                 <img
                   src={item.image_url || "/placeholder.svg"}
                   alt={item.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-              </div>
-              {/* Title / Hire Button */}
-              <div className="p-4 text-center bg-gray-50/50 border-t border-gray-100 group-hover:bg-primary transition-colors duration-300 overflow-hidden">
-                <div className="relative h-6">
-                  <span className="font-display text-base font-bold text-foreground absolute inset-0 flex items-center justify-center transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-full">
-                       {item.name}
-                  </span>
-                  <span className="font-display text-sm font-bold text-black absolute inset-0 flex items-center justify-center transition-all duration-300 opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0">
-                    Hire Now
-                  </span>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                  <span className="font-display text-xs font-bold text-white">{item.name}</span>
                 </div>
               </div>
-            </a>
-          ))}
-        </div>
-         )}
+            ))}
+          </div>
+        )}
 
-        {/* View All Button */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-8">
           <Link
-            to="/services"
-            className="inline-block bg-primary text-black font-bold px-10 py-4 text-sm uppercase tracking-wider hover:bg-charcoal hover:text-white transition-all duration-300"
+            to="/gallery"
+            className="inline-block bg-primary text-primary-foreground font-bold px-8 py-3 text-xs uppercase tracking-wider hover:opacity-90 transition-opacity"
           >
-            View All Services
+            View All Projects
           </Link>
         </div>
       </div>
