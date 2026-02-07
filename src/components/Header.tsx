@@ -1,52 +1,42 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Phone, Mail, Facebook, Instagram, Youtube, Menu, X, ChevronDown } from "lucide-react";
+import { Phone, Mail, Facebook, Instagram, Menu, X, ChevronDown } from "lucide-react";
 import logo from "@/assets/services/logo.png";
 
-
 const TopContactBar = () => (
-  <div className="w-full bg-surface-dark text-surface-dark-foreground py-3">
+  <div className="w-full bg-surface-dark text-surface-dark-foreground py-2">
     <div className="container mx-auto px-6 text-sm">
-      {/* Mobile: phone (left) and socials (right) */}
       <div className="flex items-center justify-between sm:hidden">
         <a href="tel:+260975078766" className="flex items-center gap-2 hover:text-primary transition-colors">
-          <Phone className="h-4 w-4 text-primary" />
-          <span className="font-medium">+260 975 078 766</span>
+          <Phone className="h-3.5 w-3.5 text-primary" />
+          <span className="font-medium text-xs">+260 975 078 766</span>
         </a>
         <div className="flex items-center gap-3">
           <a href="https://web.facebook.com/profile.php?id=100085097660946" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Facebook">
-            <Facebook className="h-4 w-4" />
+            <Facebook className="h-3.5 w-3.5" />
           </a>
           <a href="#" className="hover:text-primary transition-colors" aria-label="Instagram">
-            <Instagram className="h-4 w-4" />
+            <Instagram className="h-3.5 w-3.5" />
           </a>
         </div>
       </div>
-
-      {/* Desktop/tablet: original full bar */}
-      <div className="hidden sm:flex flex-row justify-between items-center gap-3">
-          <div className="flex items-center gap-8">
-          <a href="tel:+260975078766" className="flex items-center gap-2 hover:text-primary transition-colors group">
-            <Phone className="h-4 w-4 text-primary" />
-            <span className="font-medium">+260 975 078 766</span>
+      <div className="hidden sm:flex flex-row justify-between items-center">
+        <div className="flex items-center gap-6">
+          <a href="tel:+260975078766" className="flex items-center gap-1.5 hover:text-primary transition-colors">
+            <Phone className="h-3.5 w-3.5 text-primary" />
+            <span className="font-medium text-xs">+260 975 078 766</span>
           </a>
-          <a href="mailto:ingenuity.engltd@gmail.com" className="flex items-center gap-2 hover:text-primary transition-colors group">
-            <Mail className="h-4 w-4 text-primary" />
-            <span className="font-medium">ingenuity.engltd@gmail.com</span>
+          <a href="mailto:ingenuity.engltd@gmail.com" className="flex items-center gap-1.5 hover:text-primary transition-colors">
+            <Mail className="h-3.5 w-3.5 text-primary" />
+            <span className="font-medium text-xs">ingenuity.engltd@gmail.com</span>
           </a>
         </div>
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-4">
           <a href="https://web.facebook.com/profile.php?id=100085097660946" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors" aria-label="Facebook">
-            <Facebook className="h-4 w-4" />
+            <Facebook className="h-3.5 w-3.5" />
           </a>
-          <a href="https://wa.me/260975078766?text=Hello%2C%20I%27m%20interested%20in%20your%20services.%20Please%20advise%20on%20availability%20and%20next%20steps." className="hover:text-primary transition-colors" aria-label="WhatsApp">
-            <Instagram className="h-4 w-4" />
-          </a>
-          <a href="https://wa.me/260975078766?text=Hello%2C%20I%27m%20interested%20in%20your%20services.%20Please%20advise%20on%20availability%20and%20next%20steps." className="hover:text-primary transition-colors" aria-label="WhatsApp">
-            <Phone className="h-4 w-4" />
-          </a>
-          <a href="https://wa.me/260975078766?text=Hello%2C%20I%27m%20interested%20in%20your%20services.%20Please%20advise%20on%20availability%20and%20next%20steps." className="hover:text-primary transition-colors" aria-label="WhatsApp">
-            <Youtube className="h-4 w-4" />
+          <a href="https://wa.me/260975078766" className="hover:text-primary transition-colors" aria-label="WhatsApp">
+            <Instagram className="h-3.5 w-3.5" />
           </a>
         </div>
       </div>
@@ -58,11 +48,8 @@ const navItems = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "Services", href: "/services" },
-  { label: "Pages", dropdown: [
-      { label: "Projects", href: "/gallery" },
-      { label: "Certifications", href: "/certifications" },
-    ]
-  },
+  { label: "Projects", href: "/gallery" },
+  { label: "Certifications", href: "/certifications" },
   { label: "FAQ", href: "/faq" },
 ];
 
@@ -71,9 +58,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 80);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -81,136 +66,75 @@ const Header = () => {
   return (
     <header className="w-full absolute top-0 left-0 right-0 z-50">
       <TopContactBar />
-      <nav className={`w-full transition-all duration-300 ${isScrolled ? 'fixed top-0 left-0 right-0 z-50' : 'relative'}`}>
-        <div className="w-full">
-          <div className="site-header-card">
-            <div className="container mx-auto px-4 flex items-center gap-3">
-              {/* Logo + text: show logo and large text; ensure visible */}
-              <Link to="/" className="flex items-center gap-4 mr-auto">
-                <img src={logo} alt="Ingenuity logo" className="w-16 h-16 object-contain shrink-0" />
-                <div className="flex flex-col">
-                  <span className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
-                    INGENUITY
-                  </span>
-                  <span className="text-base md:text-lg text-secondary/90 uppercase tracking-[0.12em]">
-                    SPECIALIZED ENGINEERING
-                  </span>
-                </div>
-              </Link>
-
-              {/* Desktop Navigation */}
-              <div className="hidden lg:flex items-center gap-8">
-                {navItems.map((item) => {
-                  if (item.dropdown) {
-                    return (
-                      <div key={item.label} className="relative group">
-                        <button className="flex items-center gap-2 font-medium text-secondary/90 hover:text-accent transition-colors focus:outline-none text-base tracking-wide py-2">
-                          {item.label}
-                          <ChevronDown className="h-4 w-4" />
-                        </button>
-                        <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-out transform translate-y-2 group-hover:translate-y-0">
-                          <div className="bg-white border border-muted shadow-lg min-w-[200px] py-2 rounded-md">
-                            {item.dropdown.map((subItem, idx) => (
-                              <Link
-                                key={subItem.label}
-                                to={subItem.href}
-                                className="block px-5 py-3 text-secondary hover:bg-muted transition-all duration-150"
-                                style={{ transitionDelay: `${idx * 20}ms` }}
-                              >
-                                {subItem.label}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <Link
-                      key={item.label}
-                      to={item.href}
-                      className="font-medium text-secondary/90 hover:text-accent transition-colors text-base tracking-wide"
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                })}
-
-                <Link to="/faq" className="hidden lg:inline-block" />
-
-                <a
-                  href="mailto:ingenuity.engltd@gmail.com?subject=Request%20a%20Quote"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-accent-2 font-bold px-5 py-2 rounded-full text-sm"
-                >
-                  Request a Quote
-                </a>
+      <nav className={`w-full transition-all duration-300 ${isScrolled ? 'fixed top-0 left-0 right-0 z-50 shadow-md' : 'relative'}`}>
+        <div className="bg-background">
+          <div className="container mx-auto px-6 py-2 flex items-center">
+            {/* Logo unit — logo + text aligned as one cohesive block */}
+            <Link to="/" className="flex items-center gap-3 mr-auto">
+              <img src={logo} alt="ISEW logo" className="w-12 h-12 object-contain shrink-0" />
+              <div className="flex flex-col leading-none">
+                <span className="font-display text-xl md:text-2xl lg:text-3xl font-bold text-foreground tracking-tight">
+                  INGENUITY
+                </span>
+                <span className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-[0.15em] mt-0.5">
+                  Specialized Engineering
+                </span>
               </div>
+            </Link>
 
-              {/* Mobile Menu Toggle */}
-              <button
-                className="lg:hidden text-secondary"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label="Toggle menu"
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-6">
+              {navItems.map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.href!}
+                  className="font-medium text-sm text-foreground/80 hover:text-primary transition-colors tracking-wide"
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <a
+                href="mailto:ingenuity.engltd@gmail.com?subject=Request%20a%20Quote"
+                className="bg-primary text-primary-foreground font-bold px-5 py-2 text-xs uppercase tracking-wider hover:opacity-90 transition-opacity"
               >
-                {isMobileMenuOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
-              </button>
+                Get a Quote
+              </a>
+            </div>
+
+            {/* Mobile Toggle */}
+            <button
+              className="lg:hidden text-foreground"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden bg-background border-t border-border shadow-lg">
+            <div className="container mx-auto px-6 py-4 flex flex-col gap-3">
+              {navItems.map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.href!}
+                  className="font-medium text-sm text-foreground/80 hover:text-primary py-1.5"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <a
+                href="mailto:ingenuity.engltd@gmail.com?subject=Request%20a%20Quote"
+                className="bg-primary text-primary-foreground font-bold w-full text-center py-2.5 text-xs uppercase tracking-wider mt-2"
+              >
+                Get a Quote
+              </a>
             </div>
           </div>
-
-          {/* Mobile Navigation */}
-          {isMobileMenuOpen && (
-            <div className="container mx-auto px-4 lg:hidden mt-4">
-              <div className="bg-white shadow-sm p-4">
-                <div className="flex flex-col gap-4">
-                  {navItems.map((item) => {
-                    if (item.dropdown) {
-                      return (
-                        <div key={item.label} className="flex flex-col gap-2">
-                          <span className="font-semibold text-secondary text-base">{item.label}</span>
-                          <div className="pl-4 flex flex-col gap-1">
-                            {item.dropdown.map((subItem) => (
-                              <Link
-                                key={subItem.label}
-                                to={subItem.href}
-                                className="text-secondary/90 hover:text-accent"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                              >
-                                {subItem.label}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      );
-                    }
-
-                    return (
-                      <Link
-                        key={item.label}
-                        to={item.href}
-                        className="font-semibold text-secondary text-base"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    );
-                  })}
-
-                  <a
-                    href="mailto:ingenuity.engltd@gmail.com?subject=Request%20a%20Quote"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-accent-2 font-bold w-full text-center py-3"
-                  >
-                    Request a Quote
-                  </a>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+        )}
       </nav>
     </header>
   );

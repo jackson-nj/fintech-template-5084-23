@@ -18,12 +18,12 @@
  import tippers from "@/assets/hire/tippers.png";
  import waterbowser from "@/assets/hire/waterbowser.png";
  
- interface HireItem {
-   id: string;
-   name: string;
-   description?: string;
-   image_url?: string;
- }
+interface HireItem {
+  id: string;
+  name: string;
+  description?: string | null;
+  image_url?: string | null;
+}
  
  const fallbackEquipment = [
    { id: "1", name: "Backhoe Loader", image_url: backhoeloader, description: "Versatile machine for digging, loading, and material handling." },

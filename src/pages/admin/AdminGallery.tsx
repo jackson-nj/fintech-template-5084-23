@@ -18,11 +18,11 @@ interface GalleryItem {
 const AdminGallery = () => {
    const { data: items, loading, create, remove } = useSupabaseData<GalleryItem>("gallery");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({ alt: "", src: "" });
+  const [formData, setFormData] = useState<{ alt: string; src: string; description?: string }>({ alt: "", src: "" });
    const [saving, setSaving] = useState(false);
 
   const openAddModal = () => {
-    setFormData({ alt: "", src: "", description: "" });
+    setFormData({ alt: "", src: "" });
     setIsModalOpen(true);
   };
 
