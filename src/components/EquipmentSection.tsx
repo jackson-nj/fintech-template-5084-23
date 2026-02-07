@@ -3,22 +3,22 @@
  import { Loader2 } from "lucide-react";
  import { supabase } from "@/integrations/supabase/client";
  
- interface EquipmentItem {
-   id: string;
-   name: string;
-   image_url?: string;
- }
- 
- const fallbackEquipment = [
-   { id: "1", name: "Backhoe Loader", image_url: new URL("../assets/equipment/backhoeloader.jpg", import.meta.url).href },
-   { id: "2", name: "Roller Compactor", image_url: new URL("../assets/equipment/rollercompactor.png", import.meta.url).href },
-   { id: "3", name: "Low Bed Trailer", image_url: new URL("../assets/equipment/lowbedtrailer.jpg", import.meta.url).href },
-   { id: "4", name: "Front Loader", image_url: new URL("../assets/equipment/frontloader.jpg", import.meta.url).href },
-   { id: "5", name: "Excavator", image_url: new URL("../assets/equipment/excavator.png", import.meta.url).href },
-   { id: "6", name: "Grader", image_url: new URL("../assets/equipment/grader.png", import.meta.url).href },
-   { id: "7", name: "Bulldozer", image_url: new URL("../assets/equipment/bulldozer.png", import.meta.url).href },
-   { id: "8", name: "Rock Breaker", image_url: new URL("../assets/equipment/rockbreaker.jpg", import.meta.url).href },
- ];
+interface EquipmentItem {
+  id: string;
+  name: string;
+  image_url?: string | null;
+}
+
+const fallbackEquipment = [
+  { id: "1", name: "Barrick Mine", image_url: new URL("../assets/services/Barrick-Gold-Mine.png", import.meta.url).href },
+  { id: "2", name: "Kansashi Site", image_url: new URL("../assets/services/kansashi.jpg", import.meta.url).href },
+  { id: "3", name: "Konkola Plant", image_url: new URL("../assets/services/konkola.avif", import.meta.url).href },
+  { id: "4", name: "Mopani Works", image_url: new URL("../assets/services/mopani.jpg", import.meta.url).href },
+  { id: "5", name: "Neelkanth Lime", image_url: new URL("../assets/services/Neelkanth-lime-1.png", import.meta.url).href },
+  { id: "6", name: "Mining Ops", image_url: new URL("../assets/services/84f18f05b6fa96f541dbec904c673f05.jpg", import.meta.url).href },
+  { id: "7", name: "About Image A", image_url: new URL("../assets/services/about us1.jpg", import.meta.url).href },
+  { id: "8", name: "About Image B", image_url: new URL("../assets/services/about us2.jpg", import.meta.url).href },
+];
  
  const EquipmentSection = () => {
    const [equipment, setEquipment] = useState<EquipmentItem[]>([]);
@@ -47,17 +47,17 @@
    }, []);
 
   return (
-    <section id="equipment" className="py-24 lg:py-32 bg-white">
+    <section id="services" className="py-24 lg:py-32 bg-white">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-20">
-          <span className="text-primary font-bold uppercase tracking-[0.2em] text-sm">Our Fleet</span>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-6">
-            EQUIPMENT <span className="text-primary">CATEGORIES</span>
+          <span className="text-primary font-bold uppercase tracking-[0.2em] text-sm">Our Services</span>
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mt-4 mb-2">
+            SERVICES <span className="text-primary">OFFERED</span>
           </h2>
+          <div className="text-sm text-muted-foreground mb-4">Target: Mining Operations</div>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            Browse our extensive range of well-maintained heavy machinery ready for hire. 
-            All equipment comes with optional experienced operators.
+            Browse our core service offerings focused on industrial mining, construction and mechanical projects.
           </p>
         </div>
 
@@ -67,20 +67,20 @@
            </div>
          ) : (
            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-             {equipment.map((item) => (
-            <a
-                 key={item.id}
-              href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group bg-white border-2 border-gray-100 hover:border-primary overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg shadow-sm"
-            >
+            {equipment.map((item) => (
+              <a
+                key={item.id}
+                href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20your%20services.%20Please%20advise%20on%20availability%20and%20next%20steps."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group bg-white border-2 border-gray-100 hover:border-primary overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg shadow-sm"
+              >
               {/* Image */}
               <div className="relative aspect-[4/3] overflow-hidden bg-white">
                 <img
-                     src={item.image_url || "/placeholder.svg"}
-                     alt={item.name}
-                  className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+                  src={item.image_url || "/placeholder.svg"}
+                  alt={item.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
               {/* Title / Hire Button */}
@@ -102,10 +102,10 @@
         {/* View All Button */}
         <div className="text-center mt-12">
           <Link
-            to="/hire"
+            to="/services"
             className="inline-block bg-primary text-black font-bold px-10 py-4 text-sm uppercase tracking-wider hover:bg-charcoal hover:text-white transition-all duration-300"
           >
-            View All Equipment
+            View All Services
           </Link>
         </div>
       </div>

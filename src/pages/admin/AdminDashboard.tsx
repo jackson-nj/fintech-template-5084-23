@@ -1,23 +1,21 @@
  import { useEffect, useState } from "react";
  import { Link } from "react-router-dom";
-import { Truck, Wrench, Image, Award, Settings, ArrowRight } from "lucide-react";
+import { Image, Settings, ArrowRight } from "lucide-react";
 import AdminLayout from "@/components/admin/AdminLayout";
 import { supabase } from "@/integrations/supabase/client";
 // project upload helpers removed (Projects form deleted)
 
 const AdminDashboard = () => {
-   const [counts, setCounts] = useState({
-     equipment: 0,
-     hire: 0,
-     gallery: 0,
-     certifications: 0,
-     services: 0,
-   });
+  const [counts, setCounts] = useState({
+    projects: 0,
+    services: 0,
+  });
 
   // no local project form state (Projects form removed)
 
   const fetchCounts = async () => {
-    const tables = ["equipment", "hire", "gallery", "certifications", "services"] as const;
+    // We only need counts for projects (stored in `gallery`) and services
+    const tables = ["gallery", "services"] as const;
     const results = await Promise.all(
       tables.map(async (table) => {
         const { count } = await supabase.from(table).select("*", { count: "exact", head: true });
@@ -25,7 +23,9 @@ const AdminDashboard = () => {
       })
     );
     const newCounts = results.reduce((acc, { table, count }) => {
-      acc[table] = count;
+      // map gallery -> projects for UI
+      if (table === "gallery") acc["projects"] = count;
+      else acc[table] = count;
       return acc;
     }, {} as Record<string, number>);
     setCounts(newCounts as typeof counts);
@@ -35,43 +35,22 @@ const AdminDashboard = () => {
     fetchCounts();
   }, []);
  
-   const sections = [
-     {
-       icon: Truck,
-       title: "Equipment",
-       description: "Manage equipment categories displayed on the home page",
-       path: "/admin/equipment",
-       count: counts.equipment,
-     },
-     {
-       icon: Wrench,
-       title: "Hire",
-       description: "Manage equipment available for hire",
-       path: "/admin/hire",
-       count: counts.hire,
-     },
+  const sections = [
     {
       icon: Image,
       title: "Projects",
       description: "Manage project images and media",
       path: "/admin/gallery",
-      count: counts.gallery,
+      count: counts.projects,
     },
-     {
-       icon: Award,
-       title: "Certifications",
-       description: "Manage company certifications and credentials",
-       path: "/admin/certifications",
-       count: counts.certifications,
-     },
-     {
-       icon: Settings,
-       title: "Services",
-       description: "Manage services displayed on the website",
-       path: "/admin/services",
-       count: counts.services,
-     },
-   ];
+    {
+      icon: Settings,
+      title: "Services",
+      description: "Manage services displayed on the website",
+      path: "/admin/services",
+      count: counts.services,
+    },
+  ];
  
   return (
     <AdminLayout>
@@ -87,7 +66,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
           {sections.map((section) => (
             <Link
               key={section.path}

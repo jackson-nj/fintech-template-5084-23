@@ -84,7 +84,7 @@ const Certifications = () => {
               LICENSED & <span className="text-primary">CERTIFIED</span>
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed">
-              Changati Construction is a fully registered and compliant company, meeting all regulatory requirements 
+              Ingenuity Specialized Engineering Works Ltd (ISEW) is a fully registered and compliant company, meeting all regulatory requirements 
               in Zambia. Our certifications demonstrate our commitment to operating with integrity, transparency, 
               and adherence to all legal and industry standards.
             </p>
@@ -139,10 +139,10 @@ const Certifications = () => {
               <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-6">
                 OUR COMMITMENT TO <span className="text-primary">COMPLIANCE</span>
               </h2>
-              <p className="text-white/70 leading-relaxed mb-8">
+                <p className="text-white/70 leading-relaxed mb-8">
                 We believe in doing business the right way. Our certifications and registrations 
                 are not just legal requirements—they reflect our core values of integrity, 
-                responsibility, and professionalism. When you work with Changati Construction, 
+                responsibility, and professionalism. When you work with Ingenuity Specialized Engineering Works Ltd (ISEW), 
                 you can be confident that you're partnering with a company that meets the highest 
                 standards of corporate governance.
               </p>
@@ -164,15 +164,14 @@ const Certifications = () => {
       {/* CTA Section */}
       <section className="py-20 bg-primary">
         <div className="container mx-auto px-6 text-center">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-black mb-6">
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-6">
             Ready to Work With a Trusted Partner?
           </h2>
-          <p className="text-black/70 max-w-2xl mx-auto mb-8">
-            Partner with a certified, compliant, and professional equipment hire company. 
-            Contact us today to discuss your project requirements.
+          <p className="text-white/80 max-w-2xl mx-auto mb-8">
+            Partner with a certified, compliant, and professional engineering and supply company. Contact us to discuss your project requirements.
           </p>
           <a
-            href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps."
+            href="https://wa.me/260975078766?text=Hello%2C%20I%27m%20interested%20in%20your%20services.%20Please%20advise%20on%20availability%20and%20next%20steps."
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-charcoal text-white font-bold px-10 py-4 text-sm uppercase tracking-wider hover:bg-black transition-colors"

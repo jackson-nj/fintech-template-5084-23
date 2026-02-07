@@ -1,5 +1,5 @@
-import { Shield, Users, Clock, Wrench, Award, HeadphonesIcon } from "lucide-react";
-import whyChooseUsImg from "@/assets/equipment/whychooseus.jpg";
+import { Shield, Users, Clock, Wrench, Award, Headphones } from "lucide-react";
+import whyChooseUsImg from "@/assets/equipment/welding tools.jpg";
 
 const benefits = [
   {
@@ -28,7 +28,7 @@ const benefits = [
     description: "ISO certified operations with comprehensive insurance coverage.",
   },
   {
-    icon: HeadphonesIcon,
+    icon: Headphones,
     title: "Dedicated Support",
     description: "Personal account managers to handle all your equipment needs.",
   },
@@ -46,10 +46,10 @@ const WhyChooseUsSection = () => {
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4 mb-6 leading-tight">
                 YOUR TRUSTED PARTNER IN <span className="text-primary">CONSTRUCTION</span>
               </h2>
-              <p className="text-muted-foreground mb-8 text-base leading-relaxed">
-                With nearly three decades of experience, Changati Construction has become the go-to choice for 
+                <p className="text-muted-foreground mb-8 text-base leading-relaxed">
+                With nearly three decades of experience, Ingenuity Specialized Engineering Works Ltd (ISEW) has become the go-to choice for 
                 construction companies, contractors, and developers. We don't just 
-                rent equipment — we go beyond construction to deliver complete solutions.
+                rent equipment — we go beyond engineering to deliver complete solutions.
               </p>
 
               {/* Benefits Grid - 2 columns */}

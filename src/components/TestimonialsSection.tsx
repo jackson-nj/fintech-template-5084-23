@@ -1,10 +1,10 @@
 import { Star, Quote } from "lucide-react";
-import testimonialImg from "@/assets/services/testimonial.jpg";
+import testimonialImg from "@/assets/services/about us2.jpg";
 
 const testimonial = {
   name: "Mulenga Chanda",
   role: "Project Manager, Lusaka Construction Ltd",
-  content: "Changati Construction has been our go-to equipment partner for 5 years. Their reliability and quality of machinery is unmatched. The operators are professional and the equipment is always in top condition.",
+  content: "Ingenuity Specialized Engineering Works Ltd (ISEW) has been our go-to equipment and engineering partner for 5 years. Their reliability and quality of machinery is unmatched. The operators are professional and the equipment is always in top condition.",
   rating: 5,
 };
 
@@ -22,15 +22,18 @@ const TestimonialsSection = () => {
 
         {/* Main Content - Image Left, Card Right */}
         <div className="relative grid lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
-          {/* Image Side - Left */}
+          {/* Image Side - Left (card style similar to Industries section) */}
           <div className="relative">
-            <img
-              src={testimonialImg}
-              alt="Happy client"
-              className="w-full h-auto object-contain"
-            />
-            {/* Orange accent border */}
-            <div className="absolute top-4 left-4 w-full h-full border-4 border-primary -z-10" />
+            <div className="relative overflow-hidden rounded-md shadow-2xl h-[320px] lg:h-[600px]">
+              <img
+                src={testimonialImg}
+                alt="Happy client"
+                className="w-full h-full object-cover"
+              />
+              {/* Thick accent border on right and bottom */}
+              <div className="absolute top-0 -right-3 w-6 h-full bg-primary" />
+              <div className="absolute -bottom-3 right-0 w-24 h-6 bg-primary" />
+            </div>
           </div>
 
           {/* Card Side - Right */}

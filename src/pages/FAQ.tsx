@@ -8,29 +8,41 @@ const faqData = [
     category: "General",
     questions: [
       {
-        question: "What types of equipment do you offer for hire?",
-        answer: "We offer a wide range of heavy construction equipment including excavators, bulldozers, graders, front loaders, backhoe loaders, roller compactors, crane trucks, tippers, water bowsers, rock breakers, forklifts, and lowbed trailers. All our equipment is well-maintained and ready for immediate deployment."
+        question: "What services do you provide?",
+        answer: "We offer mechanical engineering works, fabrication, equipment maintenance, construction support, and supply of PPE and industrial hardware."
       },
       {
-        question: "What areas do you serve?",
-        answer: "We primarily serve Zambia. Our main operations are based in Lusaka, but we can deliver equipment to construction sites across the country. Contact us for specific location inquiries."
+        question: "Do you supply PPE and industrial materials?",
+        answer: "Yes. We supply a wide range of safety gear, hardware, and engineering materials for industrial and mining operations."
       },
       {
-        question: "How long has Changati Construction been in business?",
-        answer: "Changati Construction has been providing reliable equipment hire services since 2019. In this time, we've built a strong reputation for quality equipment, professional service, and customer satisfaction."
+        question: "Where are you located?",
+        answer: "Lusaka, with services and supply support across the Copperbelt and other industrial areas."
+      },
+      {
+        question: "How long has the company been operating?",
+        answer: "Ingenuity Specialized Engineering Works Limited was established in 2025 and continues to grow its industrial support services."
       }
     ]
   },
   {
-    category: "Hiring Process",
+    category: "Projects & Supply",
     questions: [
       {
-        question: "What is the difference between wet hire and dry hire?",
-        answer: "Wet hire includes the equipment along with a trained operator and fuel, giving you a complete solution. Dry hire means you rent just the equipment and provide your own operator. We offer both options to suit your project needs and budget."
+        question: "Can you support mining and industrial sites?",
+        answer: "Yes. We support mining, construction, and industrial operations with engineering services and supply solutions."
       },
       {
-        question: "How do I book equipment?",
-        answer: "You can book equipment by calling us directly, sending an email, or filling out the contact form on our website. Our team will discuss your requirements, check availability, and provide a quote. Once confirmed, we'll arrange delivery to your site."
+        question: "Do you handle both small and large projects?",
+        answer: "Yes. We support both short-term works and larger ongoing industrial requirements."
+      },
+      {
+        question: "How do we request a quote?",
+        answer: "Contact us via phone, email, or the website contact form with your requirements and project details."
+      },
+      {
+        question: "Do you deliver supplies?",
+        answer: "Yes. We can arrange delivery and logistics for supplied materials and equipment where required."
       }
     ]
   }

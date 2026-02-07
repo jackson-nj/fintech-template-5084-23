@@ -3,11 +3,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
-import About from "./pages/About";
-import Hire from "./pages/Hire";
 import Gallery from "./pages/Gallery";
-import FAQ from "./pages/FAQ";
+import About from "./pages/About";
+import Services from "./pages/Services";
 import Certifications from "./pages/Certifications";
+import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -31,11 +31,11 @@ const App = () => (
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/hire" element={<Hire />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/faq" element={<FAQ />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
           <Route path="/certifications" element={<Certifications />} />
+          <Route path="/faq" element={<FAQ />} />
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />

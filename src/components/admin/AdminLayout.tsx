@@ -1,19 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import {
-  LayoutDashboard,
-  Truck,
-  Wrench,
-  Image,
-  Award,
-  Settings,
-  LogOut,
-  Menu,
-  X,
-  ChevronRight,
-} from "lucide-react";
+import { LayoutDashboard, Image, Settings, LogOut, Menu, X, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logomain from "@/assets/services/logomain.png";
+import logomain from "@/assets/services/Neelkanth-lime-1.png";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -21,10 +10,7 @@ interface AdminLayoutProps {
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
-  { icon: Truck, label: "Equipment", path: "/admin/equipment" },
-  { icon: Wrench, label: "Hire", path: "/admin/hire" },
   { icon: Image, label: "Projects", path: "/admin/gallery" },
-  { icon: Award, label: "Certifications", path: "/admin/certifications" },
   { icon: Settings, label: "Services", path: "/admin/services" },
 ];
 
@@ -52,9 +38,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           {/* Logo */}
           <div className="p-6 border-b border-white/10">
             <Link to="/" className="flex items-center gap-3">
-              <img src={logomain} alt="Changati" className="w-10 h-10 object-contain" />
+              <img src={logomain} alt="Ingenuity Specialized Engineering Works Ltd (ISEW)" className="w-10 h-10 object-contain" />
               <div className="flex flex-col">
-                <span className="font-display text-sm font-bold text-white">CHANGATI</span>
+                <span className="font-display text-sm font-bold text-white">INGENUITY</span>
                 <span className="text-[10px] text-white/60 uppercase tracking-wider">Admin Panel</span>
               </div>
             </Link>

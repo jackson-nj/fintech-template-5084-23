@@ -1,6 +1,6 @@
 import { ChevronDown } from "lucide-react";
-import howItWorksImg1 from "@/assets/services/how it works 1.png";
-import howItWorksImg2 from "@/assets/services/how it works2.jpg";
+import howItWorksImg1 from "@/assets/services/about us1.jpg";
+import howItWorksImg2 from "@/assets/services/about us2.jpg";
 
 const steps = [
   {

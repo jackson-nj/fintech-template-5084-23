@@ -2,9 +2,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { CheckCircle, Building2, Truck, Home, Factory, Trees, Landmark, Shield, Award, Users } from "lucide-react";
 import { useEffect, useRef } from "react";
-import aboutUs1 from "@/assets/services/about us1.jpg";
-import aboutUs2 from "@/assets/services/about us2.jpg";
-import aboutUs3 from "@/assets/services/about us3.jpg";
+const aboutUs1 = new URL("../assets/services/about us1.jpg", import.meta.url).href;
+const aboutUs2 = new URL("../assets/services/about us2.jpg", import.meta.url).href;
+const aboutUs3 = new URL("../assets/services/about us3.jpg", import.meta.url).href;
+const aboutUsImage = new URL("../assets/services/ABOUT US.jpg", import.meta.url).href;
 
 const stats = [
   { value: "6+", label: "Years Experience" },
@@ -41,12 +42,12 @@ const whyBestFeatures = [
 ];
 
 const industries = [
-  { icon: Building2, title: "Commercial Construction", description: "Office buildings, retail spaces, and commercial complexes" },
-  { icon: Home, title: "Residential Development", description: "Housing projects, apartments, and residential communities" },
-  { icon: Truck, title: "Infrastructure", description: "Roads, bridges, and public infrastructure projects" },
-  { icon: Factory, title: "Industrial", description: "Factories, warehouses, and industrial facilities" },
-  { icon: Trees, title: "Landscaping", description: "Parks, gardens, and outdoor recreational areas" },
-  { icon: Landmark, title: "Government Projects", description: "Public sector construction and development" },
+  { icon: Factory, title: "Mining & Processing", description: "PPE supply, hardware, maintenance support, and industrial equipment" },
+  { icon: Building2, title: "Engineering & Fabrication", description: "Mechanical works, welding, fitting, and equipment repair" },
+  { icon: Building2, title: "Construction & Civil Works", description: "Partitions, ceilings, drainage, roads, and site works" },
+  { icon: Factory, title: "Industrial Facilities", description: "Boilers, conveyors, crushers, mills, and plant maintenance" },
+  { icon: Home, title: "Procurement & Supply", description: "Industrial hardware, tools, and site materials sourcing" },
+  { icon: Truck, title: "Logistics & Support", description: "Transport, warehousing, and delivery of industrial supplies" },
 ];
 
 const About = () => {
@@ -72,191 +73,42 @@ const About = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Animation Styles */}
-      <style>{`
-        .about-hero-bg {
-          background-image: url(${aboutUs1});
-          background-size: cover;
-          background-position: center;
-          /* Force permanent grayscale on hero background */
-          filter: grayscale(100%);
-          -webkit-filter: grayscale(100%);
-        }
-        .fade-up {
-          opacity: 0;
-          transform: translateY(40px);
-          transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .fade-up.animate-in {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .fade-up-delay-1 { transition-delay: 0.1s; }
-        .fade-up-delay-2 { transition-delay: 0.2s; }
-        .fade-up-delay-3 { transition-delay: 0.3s; }
-        .fade-up-delay-4 { transition-delay: 0.4s; }
-        
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        
-        @keyframes slideInLeft {
-          from {
-            opacity: 0;
-            transform: translateX(-50px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        
-        @keyframes slideInRight {
-          from {
-            opacity: 0;
-            transform: translateX(50px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        
-        .hero-title {
-          animation: fadeInUp 1s ease-out 0.3s forwards;
-          opacity: 0;
-        }
-        
-        .hero-bg {
-          animation: fadeIn 1.2s ease-out forwards;
-        }
-        
-        .img-reveal-container {
-          position: relative;
-          overflow: hidden;
-        }
-
-        .img-color {
-          position: relative;
-          z-index: 1;
-          filter: grayscale(100%);
-        }
-        
-        .paint-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          z-index: 3;
-          pointer-events: none;
-          mix-blend-mode: multiply;
-        }
-        
-        .paint-drop {
-          position: absolute;
-          border-radius: 50%;
-          transform: scale(0);
-          opacity: 0;
-          animation: none;
-        }
-        .paint-drop1 { top: 20%; left: 30%; width: 80px; height: 80px; background: white; }
-        .paint-drop2 { top: 50%; left: 60%; width: 100px; height: 100px; background: white; }
-        .paint-drop3 { top: 70%; left: 20%; width: 90px; height: 90px; background: white; }
-        .paint-drop4 { top: 30%; left: 70%; width: 70px; height: 70px; background: white; }
-        .paint-drop5 { top: 60%; left: 40%; width: 110px; height: 110px; background: white; }
-        .paint-drop6 { top: 10%; left: 50%; width: 85px; height: 85px; background: white; }
-        .paint-drop7 { top: 80%; left: 70%; width: 95px; height: 95px; background: white; }
-        .paint-drop8 { top: 40%; left: 10%; width: 75px; height: 75px; background: white; }
-        .paint-drop9 { top: 15%; left: 40%; width: 90px; height: 90px; background: white; }
-        .paint-drop10 { top: 45%; left: 25%; width: 100px; height: 100px; background: white; }
-        .paint-drop11 { top: 65%; left: 55%; width: 85px; height: 85px; background: white; }
-        .paint-drop12 { top: 25%; left: 65%; width: 75px; height: 75px; background: white; }
-        .paint-drop13 { top: 55%; left: 75%; width: 95px; height: 95px; background: white; }
-        .paint-drop14 { top: 75%; left: 35%; width: 80px; height: 80px; background: white; }
-        .paint-drop15 { top: 35%; left: 15%; width: 110px; height: 110px; background: white; }
-        .paint-drop16 { top: 85%; left: 60%; width: 70px; height: 70px; background: white; }
-        
-        .img-reveal-container.animate-in .paint-drop {
-          animation: paintDrop 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-        
-        .img-reveal-container.animate-in .paint-drop:nth-child(1) { animation-delay: 0s; }
-        .img-reveal-container.animate-in .paint-drop:nth-child(2) { animation-delay: 0.1s; }
-        .img-reveal-container.animate-in .paint-drop:nth-child(3) { animation-delay: 0.2s; }
-        .img-reveal-container.animate-in .paint-drop:nth-child(4) { animation-delay: 0.15s; }
-        .img-reveal-container.animate-in .paint-drop:nth-child(5) { animation-delay: 0.25s; }
-        .img-reveal-container.animate-in .paint-drop:nth-child(6) { animation-delay: 0.3s; }
-        .img-reveal-container.animate-in .paint-drop:nth-child(7) { animation-delay: 0.05s; }
-        .img-reveal-container.animate-in .paint-drop:nth-child(8) { animation-delay: 0.35s; }
-        
-        /* Grayscale handled on the primary image via .img-color */
-        
-        @keyframes paintDrop {
-          0% {
-            transform: scale(0);
-            opacity: 1;
-          }
-          100% {
-            transform: scale(25);
-            opacity: 1;
-          }
-        }
-      `}</style>
-
       <Header />
       
-      {/* Hero Section with Background Image */}
-      <section className="relative h-[60vh] min-h-[450px] flex items-end justify-center pb-20">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat hero-bg about-hero-bg"
-        />
-        <div className="absolute inset-0 bg-charcoal/25" />
-        <div className="relative z-10 text-center px-6">
-          <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-widest hero-title">
-            About Us
-          </h1>
-        </div>
-      </section>
+      {/* Hero removed - About heading moved into content */}
 
-      {/* About Us Section with Image - WhyChooseUs Style */}
-      <section className="py-24 lg:py-32 bg-white overflow-hidden">
+      {/* About Us Section - two cards: text (left) + image (right) */}
+      <section className="py-12 lg:py-16 bg-white overflow-hidden">
         <div className="container mx-auto px-6">
-          <div className="relative flex flex-col lg:flex-row">
-            {/* Content Side - white card on the left */}
-            <div className="relative z-10 lg:w-[55%] w-full lg:mt-16">
-              <div className="bg-white p-10 lg:p-12 lg:pr-16">
+          <div className="relative flex flex-col-reverse lg:flex-row">
+            {/* Content Side - on the left */}
+            <div className="relative z-10 lg:w-[55%] w-full lg:mr-auto lg:mt-10">
+              <div className="bg-white p-6 lg:p-12 lg:pr-16">
                 <span className="fade-up text-primary font-bold uppercase tracking-[0.2em] text-sm">Who We Are</span>
-                <h2 className="fade-up fade-up-delay-1 font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4 mb-6 leading-tight">
-                  YOUR TRUSTED PARTNER IN <span className="text-primary">EQUIPMENTS</span>
+                <h1 className="fade-up fade-up-delay-1 font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4 mb-4 leading-tight">About Us</h1>
+                <h2 className="fade-up fade-up-delay-2 font-display text-xl md:text-2xl font-semibold text-foreground mb-4">
+                  Ingenuity Specialized Engineering Works Ltd
                 </h2>
-                <p className="fade-up fade-up-delay-2 text-primary font-semibold mb-6 text-lg italic">
-                  Building the future with reliable equipment and exceptional service since 2019
-                </p>
-                <p className="fade-up fade-up-delay-2 text-muted-foreground mb-6 text-base leading-relaxed">
-                  Changati Construction has been at the forefront of the equipment hire industry for over 6 years. 
-                  We've built our reputation on reliability, quality, and an unwavering commitment to our clients' success.
-                </p>
-                <p className="fade-up fade-up-delay-3 text-muted-foreground mb-8 text-base leading-relaxed">
-                  From small projects to large-scale construction, we've grown into one of the country's most trusted 
-                  equipment hire Company, serving hundreds of construction projects across various industries.
+                <p className="fade-up fade-up-delay-3 text-muted-foreground mb-6 text-base leading-relaxed">
+                  Ingenuity Specialized Engineering Works Ltd (ISEW) delivers engineering, construction and industrial supply solutions across Zambia. We specialise in mechanical engineering, fabrication, maintenance, civil construction and procurement — prioritising safety, quality and sustainability.
                 </p>
 
-                {/* Features List */}
+                <h3 className="mt-6 font-display text-lg font-bold">Our Values</h3>
+                <p className="text-muted-foreground mb-4">Innovation • Quality • Safety • Sustainability • Integrity • Collaboration • Excellence</p>
+
+                <h3 className="mt-4 font-display text-lg font-bold">Our Mission</h3>
+                <p className="text-muted-foreground mb-6">Deliver high-quality, safe and sustainable engineering solutions that support industry and infrastructure growth.</p>
+
+                {/* Features List (short & relevant) */}
                 <div className="fade-up fade-up-delay-4 grid sm:grid-cols-2 gap-x-8 gap-y-4">
-                  {aboutFeatures.map((feature, index) => (
+                  {[
+                    "Skilled technicians & certified operators",
+                    "Mechanical fabrication & industrial maintenance",
+                    "Civil construction & installation services",
+                    "PPE, hardware supply & procurement",
+                    "Logistics, transport & warehousing",
+                    "Safety-first operations and compliance",
+                  ].map((feature, index) => (
                     <div key={index} className="flex items-start gap-3 group">
                       <CheckCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                       <span className="text-foreground text-sm font-medium">{feature}</span>
@@ -266,13 +118,13 @@ const About = () => {
               </div>
             </div>
 
-            {/* Image Side - positioned higher, extends above text card */}
-            <div className="lg:absolute lg:right-0 lg:top-0 lg:w-[48%] w-full">
-              <div className="img-reveal-container relative h-[400px] lg:h-[600px]">
+            {/* Image Side - on the right for large screens */}
+            <div className="lg:absolute lg:right-0 lg:top-0 lg:w-[45%] w-full mt-8 lg:mt-0">
+              <div className="img-reveal-container relative h-[300px] sm:h-[380px] lg:h-[560px]">
                 <img
-                  src={aboutUs2}
-                  alt="Changati Construction Team"
-                  className="img-color w-full h-full object-cover filter grayscale"
+                  src={aboutUsImage}
+                  alt="About Us"
+                  className="img-color w-full h-full object-cover rounded-md"
                 />
                 {/* Paint drops overlay */}
                 <div className="paint-overlay">
@@ -280,10 +132,6 @@ const About = () => {
                   <div className="paint-drop paint-drop2" />
                   <div className="paint-drop paint-drop3" />
                   <div className="paint-drop paint-drop4" />
-                  <div className="paint-drop paint-drop5" />
-                  <div className="paint-drop paint-drop6" />
-                  <div className="paint-drop paint-drop7" />
-                  <div className="paint-drop paint-drop8" />
                 </div>
                 {/* Thick border on right side and small bottom portion */}
                 <div className="absolute top-0 -right-3 w-6 h-full bg-primary" />
@@ -294,63 +142,11 @@ const About = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-primary">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className={`fade-up fade-up-delay-${index % 4 + 1} text-center`}>
-                <span className="font-display text-4xl md:text-5xl font-bold text-white block mb-2">
-                  {stat.value}
-                </span>
-                <span className="text-white/80 text-sm uppercase tracking-wider">
-                  {stat.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ServicesSection removed from this page to avoid duplication (appears on main page) */}
 
-      {/* We Are The Best Section - Card Style */}
-      <section className="py-24 lg:py-32 bg-zinc-50 overflow-hidden">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <span className="fade-up text-primary font-bold uppercase tracking-[0.2em] text-sm mb-4 block">
-              Our Excellence
-            </span>
-            <h2 className="fade-up fade-up-delay-1 font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-              WE ARE THE <span className="text-primary">BEST</span> IN THE BUSINESS
-            </h2>
-            <p className="fade-up fade-up-delay-2 text-muted-foreground max-w-3xl mx-auto text-base leading-relaxed">
-              Our commitment to excellence, combined with decades of industry experience, makes us the preferred 
-              choice for construction equipment hire. We don't just rent equipment — we deliver solutions.
-            </p>
-          </div>
+      {/* Stats Section removed per request (years of experience / client section) */}
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {whyBestFeatures.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <div 
-                  key={index} 
-                  className={`fade-up fade-up-delay-${index + 1} bg-white p-10 group hover:bg-charcoal transition-all duration-300`}
-                >
-                  <div className="w-16 h-16 bg-primary/10 rounded flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
-                    <Icon className="h-8 w-8 text-primary group-hover:text-white transition-colors" />
-                  </div>
-                  <h3 className="font-display text-xl font-bold text-foreground mb-4 group-hover:text-white transition-colors">
-                    {feature.title}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed group-hover:text-white/70 transition-colors">
-                    {feature.description}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      {/* 'We Are The Best' section removed by request */}
 
       {/* Industries We Serve Section */}
       <section className="py-24 lg:py-32 bg-white overflow-hidden">
@@ -360,9 +156,9 @@ const About = () => {
             <div className="lg:absolute lg:left-0 lg:top-0 lg:w-[45%] w-full mt-10 lg:mt-0">
               <div className="img-reveal-container relative h-[400px] lg:h-[650px]">
                 <img
-                  src={aboutUs3}
+                  src={aboutUs1}
                   alt="Industries We Serve"
-                  className="img-color w-full h-full object-cover filter grayscale"
+                  className="img-color w-full h-full object-cover"
                 />
                 {/* Paint drops overlay */}
                 <div className="paint-overlay">
@@ -386,11 +182,10 @@ const About = () => {
               <div className="bg-white p-10 lg:p-12 lg:pl-16">
                 <span className="fade-up text-primary font-bold uppercase tracking-[0.2em] text-sm">Our Reach</span>
                 <h2 className="fade-up fade-up-delay-1 font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4 mb-6 leading-tight">
-                  INDUSTRIES <span className="text-primary">WE SERVE</span>
+                  INDUSTRIES <span className="text-primary">WE SUPPORT</span>
                 </h2>
                 <p className="fade-up fade-up-delay-2 text-muted-foreground mb-10 text-base leading-relaxed">
-                  Our versatile equipment fleet and experienced team enable us to serve a wide range of industries, 
-                  delivering tailored solutions for every unique project requirement.
+                  Our engineering, supply, and industrial services support operations across key sectors, delivering reliable solutions for demanding environments.
                 </p>
 
                 {/* Industries Grid */}
@@ -416,7 +211,6 @@ const About = () => {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 };

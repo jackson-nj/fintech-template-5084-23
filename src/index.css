@@ -1,15 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap');
 
+/* stylelint-disable at-rule-no-unknown */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* stylelint-enable at-rule-no-unknown */
 
 /* Heavy Equipment Hire - Industrial Construction Design System */
 
 @layer base {
   :root {
-    /* White base background */
-    --background: 0 0% 100%;
+    /* Premium Palette - base and accents */
+    /* Primary base (dark steel) - #0A0A0A */
+    --primary: 0 0% 3.9%;
+    --primary-foreground: 0 0% 98%;
+
+    /* Secondary (deep midnight blue) - #111827 */
+    --secondary: 222 30% 11%;
+    --secondary-foreground: 0 0% 98%;
+
+    /* Background (very clean light) - #F8FAFC */
+    --background: 210 16% 98%;
     --foreground: 220 14% 10%;
 
     /* Cards and surfaces */
@@ -19,21 +30,21 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 14% 10%;
 
-    /* Construction Orange - Primary brand color */
-    --primary: 24 95% 53%;
-    --primary-foreground: 0 0% 0%;
-
-    /* Slate grey secondary */
-    --secondary: 215 16% 94%;
-    --secondary-foreground: 220 14% 20%;
-
-    /* Muted surfaces */
-    --muted: 220 14% 96%;
+    /* Section background / muted surfaces (very subtle) */
+    --muted: 210 20% 96%;
     --muted-foreground: 220 10% 46%;
 
-    /* Accent - slightly darker orange */
-    --accent: 24 95% 48%;
-    --accent-foreground: 220 14% 10%;
+    /* Accent 1: Electric blue pop (#2563EB) */
+    --accent: 221 83% 53%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Accent 2: Neon orange pop (#FF5A1F) - for sparing highlights */
+    --accent-2: 16 100% 56%;
+    --accent-2-foreground: 0 0% 100%;
+
+    /* Highlight metallic */
+    --metallic: 218 11% 65%;
+    --metallic-foreground: 220 10% 10%;
 
     /* Destructive */
     --destructive: 0 84% 60%;
@@ -47,12 +58,12 @@
     --radius: 0.5rem;
 
     /* Dark footer/header surfaces */
-    --surface-dark: 220 14% 10%;
-    --surface-dark-foreground: 0 0% 100%;
+    --surface-dark: 0 0% 3.9%;
+    --surface-dark-foreground: 0 0% 98%;
 
     /* Charcoal grey */
-    --charcoal: 220 10% 20%;
-    --charcoal-foreground: 0 0% 100%;
+    --charcoal: 222 30% 11%;
+    --charcoal-foreground: 0 0% 98%;
 
     /* Steel grey */
     --steel: 215 16% 47%;
@@ -67,6 +78,8 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 38 92% 50%;
+    /* Estimated combined header height (top contact bar + nav). Adjust if needed. */
+    --header-height: 112px;
   }
 
   .dark {
@@ -97,6 +110,7 @@
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 220 14% 20%;
     --sidebar-ring: 38 92% 50%;
+    --header-height: 112px;
   }
 }
 
@@ -107,6 +121,8 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    /* Ensure page content sits below the absolute/fixed header */
+    padding-top: calc(var(--header-height) + env(safe-area-inset-top));
     font-family: 'Inter', sans-serif;
   }
 
@@ -170,12 +186,183 @@
     content: '';
     @apply absolute left-1/2 -translate-x-1/2 w-24 h-1 bg-primary;
   }
+
+  /* Cinematic hero overlay: layered vignette + color wash with subtle orange rim */
+  .hero-cinematic-overlay {
+    background-image:
+      radial-gradient(ellipse at center, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.52) 45%, rgba(0,0,0,0.78) 100%),
+      linear-gradient(180deg, color-mix(in srgb, hsl(var(--accent)) 22%, black) 0%, transparent 40%, color-mix(in srgb, hsl(var(--accent)) 12%, black) 100%),
+      radial-gradient(ellipse at 8% 12%, color-mix(in srgb, hsl(var(--accent-2)) 8%, transparent), transparent 24%);
+    background-blend-mode: overlay, normal, screen;
+    mix-blend-mode: normal;
+  }
+
+  /* Hero slideshow styles */
+  .hero-slides {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transform: scale(1.08);
+    transition: opacity 1.2s cubic-bezier(.22,.9,.36,1), transform var(--hero-slide-duration, 6s) cubic-bezier(.22,.9,.36,1);
+    will-change: opacity, transform;
+  }
+
+  /* When a slide becomes active it crossfades in (opacity) and smoothly scales to natural size */
+  .hero-slide.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* CSS-only fallback animation for older browsers: crossfade using keyframes */
+  @keyframes heroCrossfade {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    40% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  /* Accent button utility - electric blue by default */
+  .btn-accent {
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+    box-shadow: 0 16px 40px rgba(2,6,23,0.35);
+    transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    border-radius: 0 !important;
+  }
+
+  .btn-accent:hover {
+    transform: translateY(-2px);
+    filter: brightness(.98);
+    box-shadow: 0 22px 50px rgba(2,6,23,0.42);
+  }
+
+  /* Secondary accent utility - neon orange */
+  .btn-accent-2 {
+    background: hsl(var(--accent-2));
+    color: hsl(var(--accent-2-foreground));
+    box-shadow: 0 14px 36px rgba(50,12,6,0.26);
+    border-radius: 0 !important;
+  }
+
+  /* Force square buttons: override common button shapes and explicit rounded utilities when used on buttons */
+  button,
+  input[type="button"],
+  input[type="submit"],
+  .btn-accent,
+  .btn-accent-2,
+  a.btn-accent,
+  a.btn-accent-2 {
+    border-radius: 0 !important;
+  }
+
+  .btn-accent.rounded-full,
+  .btn-accent-2.rounded-full {
+    border-radius: 0 !important;
+  }
+
+  .section-accent {
+    border-left: 4px solid hsl(var(--accent));
+    padding-left: 1rem;
+  }
+
+  .section-accent-2 {
+    border-left: 4px solid hsl(var(--accent-2));
+    padding-left: 1rem;
+  }
+
+  /* Header card - white rounded container centered */
+  .site-header-card {
+    background: hsl(var(--background));
+    border-radius: 0;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 1px 0 rgba(2,6,23,0.06);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* Hero card style: large rounded container with overflow-hidden */
+  .hero-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 22px 60px rgba(2,6,23,0.45);
+    background: linear-gradient(180deg, rgba(10,10,10,0.02), rgba(10,10,10,0.02));
+  }
+
+  .hero-card .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-card-content {
+    position: absolute;
+    left: 6%;
+    top: 18%;
+    z-index: 30;
+    max-width: 640px;
+  }
 }
 
 @layer utilities {
+  /* Global animation variables */
+  :root {
+    --anim-duration: 600ms;
+    --anim-easing: cubic-bezier(.22,.9,.36,1);
+  }
+
+  /* Scroll-triggered animation helpers
+     Usage: add `data-animate="fade-up"` or `data-animate="zoom-in"` to elements.
+     Optionally add `data-animate-delay="150ms"` to stagger. */
+  [data-animate] {
+    opacity: 0;
+    transition-property: opacity, transform, filter;
+    transition-duration: var(--anim-duration);
+    transition-timing-function: var(--anim-easing);
+    will-change: opacity, transform;
+    transform-origin: center;
+  }
+
+  [data-animate].in-view {
+    opacity: 1;
+  }
+
+  /* Variants */
+  [data-animate="fade-up"] { transform: translateY(18px); }
+  [data-animate="fade-up"].in-view { transform: translateY(0); }
+
+  [data-animate="fade-left"] { transform: translateX(-18px); }
+  [data-animate="fade-left"].in-view { transform: translateX(0); }
+
+  [data-animate="fade-right"] { transform: translateX(18px); }
+  [data-animate="fade-right"].in-view { transform: translateX(0); }
+
+  [data-animate="zoom-in"] { transform: scale(.96); filter: contrast(.98); }
+  [data-animate="zoom-in"].in-view { transform: scale(1); filter: none; }
+
+  /* Image-specific smoothing */
+  img[data-animate] { will-change: transform, opacity; }
+
+  /* Utility to force reduced-motion preference respect */
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate] { transition: none !important; transform: none !important; opacity: 1 !important; }
+  }
+
   /* Text gradient for headings */
   .text-gradient-industrial {
-    background: linear-gradient(135deg, hsl(38 92% 50%) 0%, hsl(38 92% 40%) 100%);
+    background: linear-gradient(135deg, hsl(214 68% 30%) 0%, hsl(214 68% 14%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

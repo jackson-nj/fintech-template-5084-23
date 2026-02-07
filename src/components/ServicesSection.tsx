@@ -1,10 +1,10 @@
- import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
  import { Loader2 } from "lucide-react";
  import { supabase } from "@/integrations/supabase/client";
- import equipmentHireImg from "@/assets/services/equipment hire.jpg";
- import wetHireImg from "@/assets/services/wet hire.jpg";
- import dryHireImg from "@/assets/services/dry hire.jpg";
- import deliveryImg from "@/assets/services/delivery.jpg";
+import equipmentHireImg from "@/assets/services/construction1.jpg";
+import wetHireImg from "@/assets/services/mopani.jpg";
+import dryHireImg from "@/assets/services/card3.jpg";
+import deliveryImg from "@/assets/services/Barrick-Gold-Mine.png";
  
  interface ServiceItem {
    id: string;
@@ -16,37 +16,30 @@
 const fallbackServices: ServiceItem[] = [
   {
     id: "1",
-    title: "Equipment Hire",
+    title: "Mechanical Engineering",
     description:
-      "Access to a full range of heavy machinery for construction, earthworks, and site preparation. Available for short-term or project-based hire.",
+      "Welding, fabrication, boiler making, hydraulics, and industrial maintenance delivered by skilled technicians.",
     image_url: equipmentHireImg,
   },
   {
     id: "2",
-    title: "Delivery",
+    title: "Construction Works",
     description:
-      "Transport of machinery to and from your site using low-bed trailers. Timely, safe delivery so equipment arrives ready for work.",
+      "Civil works, installations, roads and drainage delivered with safety and quality at the forefront.",
     image_url: deliveryImg,
   },
   {
     id: "3",
-    title: "Dry Hire",
+    title: "Supplies & Logistics",
     description:
-      "Equipment supplied without an operator for clients who have their own certified team. Flexible hire periods and well-maintained machines.",
+      "Procurement, transport, warehousing and logistics support to ensure your project runs smoothly.",
     image_url: dryHireImg,
-  },
-  {
-    id: "4",
-    title: "Wet Hire",
-    description:
-      "Equipment provided with experienced, certified operators. Ideal for projects that require skilled handling and efficient execution.",
-    image_url: wetHireImg,
   },
 ];
 
 const ServicesSection = () => {
-   const [services, setServices] = useState<ServiceItem[]>([]);
-   const [loading, setLoading] = useState(true);
+  const [services, setServices] = useState<ServiceItem[]>([]);
+  const [loading, setLoading] = useState(true);
  
    useEffect(() => {
      const fetchServices = async () => {
@@ -68,6 +61,9 @@ const ServicesSection = () => {
  
      fetchServices();
    }, []);
+
+  // Animation handled globally in `main.tsx` via `initAutoAnimate()`
+  // Cards below provide `data-animate` and `data-animate-delay` attributes.
  
   const getDescription = (service: ServiceItem) => {
     if (service.description && service.description.trim().length > 0) return service.description;
@@ -92,27 +88,29 @@ const ServicesSection = () => {
              <Loader2 className="h-8 w-8 animate-spin text-primary" />
            </div>
          ) : (
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {services.map((service) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {services.map((service, index) => (
             <div
-                 key={service.id}
-              className="bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 group overflow-hidden flex flex-col lg:flex-row"
+              key={service.id}
+              data-animate="fade-up"
+              data-animate-delay={`${index * 120}ms`}
+              className="bg-white border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 group overflow-hidden flex flex-col"
             >
-              {/* Image */}
-              <div className="relative h-48 lg:h-auto lg:w-1/2 overflow-hidden bg-gray-50 flex-shrink-0">
+              {/* Image on top */}
+              <div className="relative h-48 overflow-hidden bg-gray-50">
                 <img
-                     src={service.image_url || "/placeholder.svg"}
+                  src={service.image_url || "/placeholder.svg"}
                   alt={service.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
-              {/* Content */}
-              <div className="p-6 lg:p-8 flex flex-col justify-center lg:w-1/2">
-                <h3 className="font-display text-2xl lg:text-3xl font-bold text-foreground mb-3">
+              {/* Content below image */}
+              <div className="p-6 flex flex-col justify-center">
+                <h3 className="font-display text-2xl font-bold text-foreground mb-3">
                   {service.title}
                 </h3>
                 <p className="text-muted-foreground text-base leading-relaxed mb-0">
-                     {getDescription(service)}
+                  {getDescription(service)}
                 </p>
               </div>
             </div>

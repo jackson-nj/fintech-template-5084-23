@@ -7,78 +7,52 @@ const Footer = () => {
   const quickLinks = [
     { label: "Home", href: "/" },
     { label: "About Us", href: "/about" },
-    { label: "Equipment Hire", href: "/hire" },
+    { label: "Services", href: "/services" },
+    { label: "Projects", href: "/gallery" },
+    { label: "Certifications", href: "/certifications" },
+    { label: "Hire", href: "/hire" },
+    { label: "FAQ", href: "/faq" },
   ];
 
-  const services = [
-    { label: "Equipment Hire", href: "/hire" },
-    { label: "Wet Hire", href: "/hire" },
-    { label: "Dry Hire", href: "/hire" },
-    { label: "Equipment Delivery", href: "/hire" },
-  ];
+  
 
   return (
-    <footer className="bg-surface-dark">
+    <footer className="bg-surface-dark text-white relative z-40">
       {/* Main Footer */}
-      <div className="container mx-auto px-6 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-14">
-          {/* Company Info */}
+      <div className="container mx-auto px-6 py-8 border border-white/10 rounded-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+          {/* Company Info (left) */}
           <div>
             <div className="flex items-center gap-3 mb-8">
               <div className="w-12 h-12 bg-primary rounded flex items-center justify-center">
-                <span className="font-display text-2xl font-bold text-primary-foreground">CC</span>
+                <span className="font-display text-2xl font-bold text-primary-foreground">ISEW</span>
               </div>
               <div className="flex flex-col">
                 <span className="font-display text-xl font-bold text-white">
-                  CHANGATI<span className="text-primary"> CONSTRUCTION</span>
+                  Ingenuity Specialized Engineering Works Ltd <span className="text-primary">(ISEW)</span>
                 </span>
-                <span className="text-[10px] text-white/60 uppercase tracking-[0.2em]">We Go Beyond Construction</span>
+                <span className="text-[10px] text-white/60 uppercase tracking-[0.2em]">We Go Beyond Engineering</span>
               </div>
             </div>
-            <p className="text-white/60 mb-8 leading-relaxed">
+            <p className="text-white/60 mb-6 leading-relaxed">
               Your trusted partner for heavy equipment hire. We go beyond construction to provide reliable, well-maintained machinery with experienced operators for all your project needs.
             </p>
-            <div className="flex gap-4">
-              <a
-                href="https://web.facebook.com/profile.php?id=100085097660946"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-11 h-11 bg-charcoal rounded flex items-center justify-center hover:bg-primary transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook className="h-5 w-5 text-white" />
-              </a>
-              <a
-                href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps."
-                className="w-11 h-11 bg-charcoal rounded flex items-center justify-center hover:bg-primary transition-colors"
-                aria-label="WhatsApp"
-              >
-                <Instagram className="h-5 w-5 text-white" />
-              </a>
-              <a
-                href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps."
-                className="w-11 h-11 bg-charcoal rounded flex items-center justify-center hover:bg-primary transition-colors"
-                aria-label="WhatsApp"
-              >
-                <Phone className="h-5 w-5 text-white" />
-              </a>
-              <a
-                href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps."
-                className="w-11 h-11 bg-charcoal rounded flex items-center justify-center hover:bg-primary transition-colors"
-                aria-label="WhatsApp"
-              >
-                <Twitter className="h-5 w-5 text-white" />
-              </a>
-            </div>
+            
+            <a
+              href="mailto:ingenuity.engltd@gmail.com?subject=Request%20a%20Quote"
+              className="inline-block btn-accent-2 font-bold px-5 py-2 rounded-full text-sm mb-4"
+            >
+              Request a Quote
+            </a>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Links (second) */}
           <div>
-            <h4 className="font-display text-xl font-bold mb-8 text-white relative inline-block">
+            <h4 className="font-display text-xl font-bold mb-6 text-white relative inline-block">
               Quick Links
               <span className="absolute -bottom-2 left-0 w-12 h-1 bg-primary" />
             </h4>
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.label}>
                   <Link
@@ -93,61 +67,41 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Contact Info (right) */}
           <div>
-            <h4 className="font-display text-xl font-bold mb-8 text-white relative inline-block">
-              Our Services
-              <span className="absolute -bottom-2 left-0 w-12 h-1 bg-primary" />
-            </h4>
-            <ul className="space-y-4">
-              {services.map((service) => (
-                <li key={service.label}>
-                  <Link
-                    to={service.href}
-                    className="flex items-center gap-3 text-white/60 hover:text-primary transition-colors group"
-                  >
-                    <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
-                    <span className="font-medium">{service.label}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h4 className="font-display text-xl font-bold mb-8 text-white relative inline-block">
+            <h4 className="font-display text-xl font-bold mb-6 text-white relative inline-block">
               Contact Us
               <span className="absolute -bottom-2 left-0 w-12 h-1 bg-primary" />
             </h4>
-            <div className="space-y-5">
+            <div className="space-y-3">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 bg-charcoal rounded flex items-center justify-center flex-shrink-0">
                   <MapPin className="h-5 w-5 text-primary" />
                 </div>
                 <span className="text-white/60 leading-relaxed">
-                  Plot. 26, Palonaliomit Road,<br />
-                  Villa Elizabeth Off Washama Road,<br />
-                  Lusaka, Zambia, 10101
+                  Shop No. 233A, Buseko Market<br />
+                  Off Lumumba Road<br />
+                  Lusaka, Zambia
                 </span>
               </div>
+
               <a
-                href="tel:+260971688888"
+                href="tel:+260975078766"
                 className="flex items-center gap-4 text-white/60 hover:text-primary transition-colors group"
               >
                 <div className="w-10 h-10 bg-charcoal rounded flex items-center justify-center flex-shrink-0 group-hover:bg-primary transition-colors">
                   <Phone className="h-5 w-5 text-primary group-hover:text-primary-foreground transition-colors" />
                 </div>
-                <span className="font-medium">+260 971 688 888</span>
+                <span className="font-medium">+260 975 078 766</span>
               </a>
               <a
-                href="mailto:chaganticonstruction@gmail.com"
+                href="mailto:ingenuity.engltd@gmail.com"
                 className="flex items-center gap-4 text-white/60 hover:text-primary transition-colors group"
               >
                 <div className="w-10 h-10 bg-charcoal rounded flex items-center justify-center flex-shrink-0 group-hover:bg-primary transition-colors">
                   <Mail className="h-5 w-5 text-primary group-hover:text-primary-foreground transition-colors" />
                 </div>
-                <span className="font-medium">chaganticonstruction@gmail.com</span>
+                <span className="font-medium">ingenuity.engltd@gmail.com</span>
               </a>
               <div className="flex items-center gap-4 text-white/60">
                 <div className="w-10 h-10 bg-charcoal rounded flex items-center justify-center flex-shrink-0">
@@ -159,12 +113,29 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      {/* Social icons (centered) */}
+      <div className="container mx-auto px-6 py-3">
+        <div className="flex items-center justify-center gap-6">
+          <a href="https://web.facebook.com/profile.php?id=100085097660946" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-charcoal rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+            <Facebook className="h-4 w-4 text-white" />
+          </a>
+          <a href="https://wa.me/260975078766" className="w-10 h-10 bg-charcoal rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+            <Instagram className="h-4 w-4 text-white" />
+          </a>
+          <a href="tel:+260975078766" className="w-10 h-10 bg-charcoal rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+            <Phone className="h-4 w-4 text-white" />
+          </a>
+          <a href="https://wa.me/260975078766" className="w-10 h-10 bg-charcoal rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+            <Twitter className="h-4 w-4 text-white" />
+          </a>
+        </div>
+      </div>
 
       {/* Bottom Bar */}
       <div className="border-t border-charcoal">
-        <div className="container mx-auto px-6 py-8 flex justify-between items-center">
+        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
           <p className="text-white/50 text-sm">
-            © {currentYear} Changati Construction LTD. All rights reserved.
+            © {currentYear} Ingenuity Specialized Engineering Works Ltd (ISEW). All rights reserved.
           </p>
           <Link
             to="/admin"

@@ -1,11 +1,10 @@
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import EquipmentSection from "@/components/EquipmentSection";
+import About from "./About";
+import ServicesSection from "@/components/ServicesSection";
 import BrandsSection from "@/components/BrandsSection";
 import WhyChooseUsSection from "@/components/WhyChooseUsSection";
-import ServicesSection from "@/components/ServicesSection";
-import HowItWorksSection from "@/components/HowItWorksSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 
@@ -15,12 +14,11 @@ const Index = () => {
       <Header />
       <main className="flex-1">
         <HeroSection />
+        <About />
+        <ServicesSection />
         <EquipmentSection />
         <BrandsSection />
         <WhyChooseUsSection />
-        <ServicesSection />
-        <HowItWorksSection />
-        <TestimonialsSection />
         <CTASection />
       </main>
       <Footer />

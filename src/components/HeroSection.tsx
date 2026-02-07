@@ -1,65 +1,106 @@
 import { Phone, ArrowRight } from "lucide-react";
-import heroImage from "@/assets/equipment/hero.jpg";
+import TextScramble from "./ui/TextScramble";
+
+// Dynamically import all hero images from src/assets/hero (place your hero images there)
+const heroModules = import.meta.glob('../assets/hero/*.{jpg,jpeg,png,webp}', { eager: true });
+const heroImages: string[] = Object.values(heroModules).map((m: any) => (m as { default: string }).default).filter(Boolean as any);
 
 const HeroSection = () => {
   return (
     <section id="hero" className="relative min-h-screen flex items-center">
-      {/* Background Image */}
-      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat">
-        <img src={heroImage} alt="" className="w-full h-full object-cover" />
-      </div>
-      
-      {/* Dark Overlay with gradient - reduced */}
-      <div className="absolute inset-0 bg-gradient-to-r from-surface-dark/80 via-surface-dark/50 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-t from-surface-dark/60 via-transparent to-surface-dark/20" />
-
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 pt-40 pb-24">
-        <div className="max-w-4xl animate-fade-up">
-          {/* Badge removed per request */}
-
-          {/* Headline */}
-          <h1 className="font-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 leading-[1.1] tracking-tight">
-            POWERFUL HEAVY<br />
-            EQUIPMENT <span className="text-primary">HIRE</span>
-          </h1>
-
-          {/* Description */}
-          <p className="text-xl md:text-2xl text-white/80 mb-10 max-w-2xl leading-relaxed font-light">
-            From excavators to graders and dump trucks, we have the reliable machinery with experienced operators. 
-            On-time delivery for projects of any scale.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-5">
-            <a
-              href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center bg-primary text-primary-foreground hover:bg-accent font-bold px-10 py-7 text-lg uppercase tracking-wider shadow-2xl hover:shadow-primary/30 transition-all group rounded"
-            >
-              Hire Now
-              <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a
-              href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20hiring%20heavy%20equipment.%20Please%20advise%20on%20availability%20and%20next%20steps."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center border-2 border-white text-white hover:bg-white hover:text-surface-dark font-bold px-10 py-7 text-lg uppercase tracking-wider bg-transparent rounded"
-            >
-              <Phone className="mr-3 h-5 w-5" />
-              Request a Call
-            </a>
-          </div>
+      {/* Full-bleed slideshow container */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="hero-slides">
+          {heroImages.length > 0 ? (
+            heroImages.map((src, i) => (
+              <div key={src} className={`hero-slide ${i === 0 ? 'active' : ''}`}>
+                <img src={src} alt="" className="absolute inset-0 w-full h-full object-cover" />
+              </div>
+            ))
+          ) : (
+            <div className="hero-slide active">
+              <img src="/src/assets/equipment/hero.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Bottom Yellow Bar */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <div className="h-1 bg-primary" />
+      {/* Cinematic overlay */}
+      <div className="absolute inset-0 hero-cinematic-overlay" />
+
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-6">
+        <div className="max-w-3xl">
+          <span className="inline-block bg-black/40 text-white/90 px-3 py-1 rounded-full text-xs mb-4">Trusted since 1989</span>
+          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 leading-tight">
+            providing best industry <TextScramble text={"solutions"} revealSpeed={100} />
+          </h1>
+
+          <p className="text-lg text-white/80 mb-6 max-w-xl">Reliable industrial solutions for mining, construction, and mechanical projects</p>
+
+          <div className="flex gap-4">
+            <a href="https://wa.me/260971688888?text=Hello%2C%20I%27m%20interested%20in%20your%20services." target="_blank" rel="noreferrer noopener" className="btn-accent-2 font-bold px-6 py-3">Get In Touch</a>
+            <a href="/gallery" className="inline-flex items-center justify-center border border-white/30 text-white/90 px-5 py-3">View Projects</a>
+          </div>
+        </div>
       </div>
     </section>
   );
 };
 
 export default HeroSection;
+
+// Auto-advance slideshow script (runs in browser)
+if (typeof window !== 'undefined') {
+  // Wait a tick for DOM to render
+    setTimeout(() => {
+      const slides = Array.from(document.querySelectorAll('.hero-slide')) as HTMLElement[];
+      if (!slides || slides.length <= 1) return;
+      // Only loop the first N slides in order, then repeat
+      const LOOP_COUNT = Math.min(4, slides.length);
+      let idx = 0;
+
+      // Ensure only the first slide in the loop is active initially
+      slides.forEach((s, i) => s.classList.toggle('active', i === 0));
+
+      let intervalId: number | null = null;
+      const CROSSFADE_MS = 1250; // slightly longer than opacity transition (1.2s)
+      const SLIDE_MS = 6000;
+
+      const start = () => {
+        if (intervalId) return;
+        intervalId = window.setInterval(() => {
+          const prev = slides[idx];
+          const nextIdx = (idx + 1) % LOOP_COUNT; // cycle within first LOOP_COUNT slides
+          const next = slides[nextIdx];
+
+          // Add active to next immediately so it fades in while prev is still visible
+          next.classList.add('active');
+
+          // Remove active from previous after crossfade time to avoid visual glitch
+          setTimeout(() => {
+            prev.classList.remove('active');
+          }, CROSSFADE_MS);
+
+          idx = nextIdx;
+        }, SLIDE_MS);
+      };
+
+      const stop = () => {
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+      };
+
+      // Start auto-advance
+      start();
+
+      // Pause on hover over slides area
+      const container = document.querySelector('.hero-slides');
+      if (container) {
+        container.addEventListener('mouseenter', stop);
+        container.addEventListener('mouseleave', start);
+      }
+    }, 250);
+}

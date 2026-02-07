@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Key, Lock, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logomain from "@/assets/services/logomain.png";
+import logomain from "@/assets/services/Neelkanth-lime-1.png";
 
 const AdminLogin = () => {
   const [password, setPassword] = useState("");
